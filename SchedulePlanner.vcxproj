@@ -129,9 +129,11 @@
   <ItemGroup>
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="SchedulePlanner.cpp" />
+    <ClCompile Include="Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendar.h" />
+    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

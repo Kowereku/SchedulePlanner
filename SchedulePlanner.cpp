@@ -3,6 +3,7 @@
 #include <vector>
 #include <iomanip>
 #include "Calendar.h"
+#include "Menu.h"
 
 
 using namespace std;
@@ -11,7 +12,8 @@ using namespace std;
 int main()
 {
     setlocale(LC_ALL, "");
-    Calendar cal1;
-    cal1.displayWeek();
+    Menu menu1;
+    menu1.displayMenu();
+
 
 }
