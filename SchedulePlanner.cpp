@@ -2,12 +2,16 @@
 #include <SFML/Window/Mouse.hpp>
 #include <iostream>
 #include "Menu.h"
+#include "TimeTable.h"
 
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Main Menu", sf::Style::Close);
 
-    Menu menu(window.getSize().x, window.getSize().y);
+    State state = State::Menu;
+
+    Menu menu(window.getSize().x, window.getSize().y, state);
+    TimeTable timetable(window.getSize().x, window.getSize().y, state);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -17,11 +21,25 @@ int main() {
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-                menu.handleMouseClick(mousePos);
+                switch (state)
+                {
+                case (State::Menu):
+                    menu.handleMouseClick(mousePos); break;
+                
+                case (State::TimeTable):
+                    break;
+                }
+
             }
         }
         window.clear();
-        menu.draw(window);
+        switch (state)
+        {
+        case (State::Menu):
+            menu.draw(window); break;
+        case (State::TimeTable):
+            timetable.draw(window); break;
+        }
         window.display();
     }
 

@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 
-Menu::Menu(float width, float height) {
+Menu::Menu(float width, float height, State& state) : currentState(state) {
     if (!font.loadFromFile("arial.ttf")) {
         // Handle error
     }
@@ -39,7 +39,7 @@ void Menu::handleMouseClick(sf::Vector2f mousePos) {
     for (const auto& item : menuItems) {
         if (item.getGlobalBounds().contains(mousePos)) {
             if (item.getString() == "Otworz planner") {
-                std::cout << "Wcisnieto otworzenie" << std::endl;
+                currentState = State::TimeTable;
             }
             else if (item.getString() == "Opcje") {
                 std::cout << "Wcisnieto opcje" << std::endl;
