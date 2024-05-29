@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include <iostream>
 #include "State.h"
 
 #define MENU_ITEMS 3
@@ -16,6 +17,7 @@ public:
     void handleMouseClick(sf::Vector2f mousePos);
 
 private:
+    sf::RectangleShape background;
     std::vector<sf::Text> menuItems;
     sf::Text header;
     sf::Font font;

@@ -6,7 +6,7 @@
 
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Main Menu", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Main Menu", sf::Style::Close);
 
     State state = State::Menu;
 
@@ -27,7 +27,7 @@ int main() {
                     menu.handleMouseClick(mousePos); break;
                 
                 case (State::TimeTable):
-                    break;
+                    timetable.handleMouseClick(mousePos); break;
                 }
 
             }

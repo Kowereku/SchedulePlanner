@@ -1,17 +1,18 @@
 #include "Menu.h"
-#include <iostream>
+
 
 Menu::Menu(float width, float height, State& state) : currentState(state) {
     if (!font.loadFromFile("arial.ttf")) {
-        // Handle error
+        // tu sie doda error
     }
+
     for (int i = 0; i < MENU_ITEMS; ++i) {
         sf::Text text;
         text.setFont(font);
         switch (i)
         {
         case 0:
-            text.setString("Otworz planner"); break;
+            text.setString("Otworz"); break;
         case 1:
             text.setString("Opcje"); break;
         case 2:
@@ -21,6 +22,10 @@ Menu::Menu(float width, float height, State& state) : currentState(state) {
         text.setPosition(sf::Vector2f(width / 2 - text.getGlobalBounds().width / 2, height / (MENU_ITEMS + 1) * (i + 1) + 50));
         menuItems.push_back(text);
     }
+
+    background.setSize(sf::Vector2f(width, height));
+    background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tła
+
     header.setFont(font);
     header.setString("Kalendarz");
     header.setCharacterSize(80);
@@ -29,6 +34,7 @@ Menu::Menu(float width, float height, State& state) : currentState(state) {
 }
 
 void Menu::draw(sf::RenderWindow& window) {
+    window.draw(background);
     window.draw(header);
     for (const auto& item : menuItems) {
         window.draw(item);
@@ -38,7 +44,7 @@ void Menu::draw(sf::RenderWindow& window) {
 void Menu::handleMouseClick(sf::Vector2f mousePos) {
     for (const auto& item : menuItems) {
         if (item.getGlobalBounds().contains(mousePos)) {
-            if (item.getString() == "Otworz planner") {
+            if (item.getString() == "Otworz") {
                 currentState = State::TimeTable;
             }
             else if (item.getString() == "Opcje") {
