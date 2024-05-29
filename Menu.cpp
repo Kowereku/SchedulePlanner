@@ -1,33 +1,46 @@
 #include "Menu.h"
+#include <iostream>
 
-Menu::Menu(float width, float height)
-{
-	if (!font.loadFromFile("arial.ttf"))
-	{
-		// error handler;
-	}
-
-	menu[0].setFont(font);
-	menu[0].setFillColor(sf::Color::White);
-	menu[0].setString("Otworz");
-	menu[0].setPosition(sf::Vector2f((width / 2) - 40, height / (ITEMS_IN_MENU + 1) * 1));
-
-	menu[1].setFont(font);
-	menu[1].setFillColor(sf::Color::White);
-	menu[1].setString("Opcje");
-	menu[1].setPosition(sf::Vector2f((width / 2) - 40, height / (ITEMS_IN_MENU + 1) * 2));
-
-	menu[2].setFont(font);
-	menu[2].setFillColor(sf::Color::White);
-	menu[2].setString("Wyjdz");
-	menu[2].setPosition(sf::Vector2f((width / 2) - 40, height / (ITEMS_IN_MENU + 1) * 3));
-
+MainMenu::MainMenu(float width, float height) {
+    if (!font.loadFromFile("arial.ttf")) {
+        // Handle error
+    }
+    for (int i = 0; i < MENU_ITEMS; ++i) {
+        sf::Text text;
+        text.setFont(font);
+        switch (i)
+        {
+        case 0:
+            text.setString("Otworz planner"); break;
+        case 1:
+            text.setString("Opcje"); break;
+        case 2:
+            text.setString("Wyjdz"); break;
+        }
+        text.setFillColor(sf::Color::White);
+        text.setPosition(sf::Vector2f(width / 2, height / (MENU_ITEMS + 1) * (i + 1)));
+        menuItems.push_back(text);
+    }
 }
 
-void Menu::draw(sf::RenderWindow &window)
-{
-	for (int i = 0; i < ITEMS_IN_MENU; i++)
-	{
-		window.draw(menu[i]);
-	}
+void MainMenu::draw(sf::RenderWindow& window) {
+    for (const auto& item : menuItems) {
+        window.draw(item);
+    }
+}
+
+void MainMenu::handleMouseClick(sf::Vector2f mousePos) {
+    for (const auto& item : menuItems) {
+        if (item.getGlobalBounds().contains(mousePos)) {
+            if (item.getString() == "Otworz planner") {
+                std::cout << "Wcisnieto otworzenie" << std::endl;
+            }
+            else if (item.getString() == "Opcje") {
+                std::cout << "Wcisnieto opcje" << std::endl;
+            }
+            else if (item.getString() == "Wyjdz") {
+                exit(0);
+            }
+        }
+    }
 }

@@ -3,37 +3,27 @@
 #include <iostream>
 #include "Menu.h"
 
-using namespace std;
 
-int main()
-{
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Menu", sf::Style::Close);
 
-    sf::RenderWindow window(sf::VideoMode(1000, 600), "Menu glowne", sf::Style::Titlebar | sf::Style::Close);
-    window.setFramerateLimit(60);
+    MainMenu menu(window.getSize().x, window.getSize().y);
 
-    Menu menu(window.getSize().x, window.getSize().y);
-
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (event.type) {
-            case sf::Event::MouseButtonPressed:
-                cout << "Button " << event.mouseButton.button << " @ "
-                    << sf::Mouse::getPosition(window).x << ", "
-                    << sf::Mouse::getPosition(window).y << "\n";
-                break;
-            case sf::Event::Closed:
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+                menu.handleMouseClick(mousePos);
+            }
         }
-
         window.clear();
-
         menu.draw(window);
-        
         window.display();
     }
 
+    return 0;
 }

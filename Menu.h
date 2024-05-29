@@ -1,18 +1,19 @@
-#pragma once
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <string>
 
-#define ITEMS_IN_MENU 3
+#define MENU_ITEMS 3
 
-class Menu
-{
+class MainMenu {
 public:
-	Menu(float width, float height);
-
-	void draw(sf::RenderWindow& window);
+    MainMenu(float width, float height);
+    void draw(sf::RenderWindow& window);
+    void handleMouseClick(sf::Vector2f mousePos);
 
 private:
-	int selectedItemIndex;
-	sf::Font font;
-	sf::Text menu[ITEMS_IN_MENU];
+    std::vector<sf::Text> menuItems;
+    sf::Font font;
+
+    void initMenuItems(float width, float height);
 };
 
