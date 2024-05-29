@@ -4,16 +4,15 @@
 
 #define MENU_ITEMS 3
 
-class MainMenu {
+class Menu {
 public:
-    MainMenu(float width, float height);
+    Menu(float width, float height);
     void draw(sf::RenderWindow& window);
     void handleMouseClick(sf::Vector2f mousePos);
 
 private:
     std::vector<sf::Text> menuItems;
+    sf::Text header;
     sf::Font font;
-
-    void initMenuItems(float width, float height);
 };
 

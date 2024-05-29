@@ -5,9 +5,9 @@
 
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Menu", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(1024, 768), "Main Menu", sf::Style::Close);
 
-    MainMenu menu(window.getSize().x, window.getSize().y);
+    Menu menu(window.getSize().x, window.getSize().y);
 
     while (window.isOpen()) {
         sf::Event event;

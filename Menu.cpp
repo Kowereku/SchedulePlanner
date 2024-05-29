@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 
-MainMenu::MainMenu(float width, float height) {
+Menu::Menu(float width, float height) {
     if (!font.loadFromFile("arial.ttf")) {
         // Handle error
     }
@@ -18,18 +18,24 @@ MainMenu::MainMenu(float width, float height) {
             text.setString("Wyjdz"); break;
         }
         text.setFillColor(sf::Color::White);
-        text.setPosition(sf::Vector2f(width / 2, height / (MENU_ITEMS + 1) * (i + 1)));
+        text.setPosition(sf::Vector2f(width / 2 - text.getGlobalBounds().width / 2, height / (MENU_ITEMS + 1) * (i + 1) + 50));
         menuItems.push_back(text);
     }
+    header.setFont(font);
+    header.setString("Kalendarz");
+    header.setCharacterSize(80);
+    header.setFillColor(sf::Color::White);
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 10 - 30));
 }
 
-void MainMenu::draw(sf::RenderWindow& window) {
+void Menu::draw(sf::RenderWindow& window) {
+    window.draw(header);
     for (const auto& item : menuItems) {
         window.draw(item);
     }
 }
 
-void MainMenu::handleMouseClick(sf::Vector2f mousePos) {
+void Menu::handleMouseClick(sf::Vector2f mousePos) {
     for (const auto& item : menuItems) {
         if (item.getGlobalBounds().contains(mousePos)) {
             if (item.getString() == "Otworz planner") {
