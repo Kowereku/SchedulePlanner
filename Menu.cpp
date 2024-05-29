@@ -1,30 +1,33 @@
-#include "Menu.h";
-#include "Calendar.h";
-#include <iostream>
+#include "Menu.h"
 
-using namespace std;
+Menu::Menu(float width, float height)
+{
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		// error handler;
+	}
 
+	menu[0].setFont(font);
+	menu[0].setFillColor(sf::Color::White);
+	menu[0].setString("Otworz");
+	menu[0].setPosition(sf::Vector2f((width / 2) - 40, height / (ITEMS_IN_MENU + 1) * 1));
 
-    void Menu::displayMenu() 
-    {
-        int choice;
-        Calendar calendar;
-        while (true) {
-            cout << "Menu g³ówne:\n";
-            cout << "1. Zobacz kalendarz\n";
-            cout << "2. Wyjscie\n";
-            cout << "Wybor: ";
-            cin >> choice;
+	menu[1].setFont(font);
+	menu[1].setFillColor(sf::Color::White);
+	menu[1].setString("Opcje");
+	menu[1].setPosition(sf::Vector2f((width / 2) - 40, height / (ITEMS_IN_MENU + 1) * 2));
 
-            switch (choice) {
-            case 1:
-                calendar.displayWeek();
-                break;
-            case 2:
-                cout << "Wyjscie...\n";
-                return;
-            default:
-                cout << "Sprobuj ponownie\n";
-            }
-        }
-    }
+	menu[2].setFont(font);
+	menu[2].setFillColor(sf::Color::White);
+	menu[2].setString("Wyjdz");
+	menu[2].setPosition(sf::Vector2f((width / 2) - 40, height / (ITEMS_IN_MENU + 1) * 3));
+
+}
+
+void Menu::draw(sf::RenderWindow &window)
+{
+	for (int i = 0; i < ITEMS_IN_MENU; i++)
+	{
+		window.draw(menu[i]);
+	}
+}
