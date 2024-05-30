@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Menu.h"
 #include "TimeTable.h"
+#include "sqlite3.h"
 
 
 int main() {

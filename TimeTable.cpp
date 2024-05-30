@@ -3,7 +3,7 @@
 TimeTable::TimeTable(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("arial.ttf")) {
-        //tu sie doda error
+        // obsługa wyjąku
     }
 
     background.setSize(sf::Vector2f(width, height));

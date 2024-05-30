@@ -3,7 +3,7 @@
 
 Menu::Menu(float width, float height, State& state) : currentState(state) {
     if (!font.loadFromFile("arial.ttf")) {
-        // tu sie doda error
+        // obsługa wyjątku
     }
 
     for (int i = 0; i < MENU_ITEMS; ++i) {
