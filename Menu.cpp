@@ -16,10 +16,12 @@ Menu::Menu(float width, float height, State& state) : currentState(state) {
         case 1:
             text.setString("Opcje"); break;
         case 2:
+            text.setString("Autorzy"); break;
+        case 3:
             text.setString("Wyjdz"); break;
         }
         text.setFillColor(sf::Color::White);
-        text.setPosition(sf::Vector2f(width / 2 - text.getGlobalBounds().width / 2, height / (MENU_ITEMS + 1) * (i + 1) + 50));
+        text.setPosition(sf::Vector2f(width / 2 - text.getGlobalBounds().width / 2, height / (MENU_ITEMS + 1) * (0.7*i + 1) + 200));
         menuItems.push_back(text);
     }
 
@@ -49,6 +51,9 @@ void Menu::handleMouseClick(sf::Vector2f mousePos) {
             }
             else if (item.getString() == "Opcje") {
                 std::cout << "Wcisnieto opcje" << std::endl;
+            }
+            else if (item.getString() == "Autorzy") {
+                std::cout << "Wcisnieto autorzy" << std::endl;
             }
             else if (item.getString() == "Wyjdz") {
                 exit(0);

@@ -6,7 +6,7 @@
 #include <iostream>
 #include "State.h"
 
-#define MENU_ITEMS 3
+#define MENU_ITEMS 4
 
 
 
