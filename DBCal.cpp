@@ -17,13 +17,15 @@ void createTable(const char* s)
 
 	string sql =
 		"CREATE TABLE IF NOT EXISTS calevents ("
-		"id         INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,"
-		"priority   INTEGER NOT NULL DEFAULT 0,"
-		"name		TEXT NOT NULL,"
-		"desc		TEXT,"
-		"type		TEXT NOT NULL DEFAULT 'NORMAL',"
-		"start		INTEGER NOT NULL,"
-		"end		INTEGER,);";
+		"id	INTEGER UNIQUE,"
+		"priority	INTEGER NOT NULL DEFAULT 0,"
+		"name	TEXT NOT NULL,"
+		"desc	TEXT,"
+		"type	TEXT NOT NULL DEFAULT 'NORMAL',"
+		"start	INTEGER NOT NULL,"
+		"end	INTEGER,"
+		"PRIMARY KEY(id));";
+
 
 	try
 	{
@@ -35,11 +37,11 @@ void createTable(const char* s)
 
 		if (exit != SQLITE_OK)
 		{
-			cerr << " Error Create Table" << endl;
+			cerr << "Nie dziala tabela :(" << endl;
 			sqlite3_free(messaggeError);
 		}
 		else
-			cout << " Table created Successfully" << endl;
+			cout << "Dziala :DD" << endl;
 		sqlite3_close(DBCal);
 	}
 	catch (const exception& e)
