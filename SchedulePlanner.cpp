@@ -4,9 +4,16 @@
 #include "Menu.h"
 #include "TimeTable.h"
 #include "sqlite3.h"
+#include "DBCal.h"
 
 
 int main() {
+    sqlite3* DBCal;
+    const char* dir = "C:\\Users\Luna\source\\repos\SchedulePlanner\\DataBaseCalendar.db";
+
+    createDBCal(dir);
+    createTable(dir);
+        
     sf::RenderWindow window(sf::VideoMode(1600, 900), "Main Menu", sf::Style::Close);
 
     State state = State::Menu;
