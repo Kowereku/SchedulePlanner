@@ -68,6 +68,37 @@ void insert(const char* s)
 		cout << "Dodano" << endl;
 }
 
+void update(const char* s)
+{
+	sqlite3* DBCal;
+	char* messageError;
+
+	int exit = sqlite3_open(s, &DBCal);
+
+	string sql("UPDATE calevents SET desc = 'Zebranie' WHERE id = 1");
+
+	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
+	if (exit != SQLITE_OK)
+	{
+		cerr << " Error Insert" << endl;
+		sqlite3_free(messageError);
+	}
+	else
+		cout << "Records created Sucessfully!" << endl;
+
+
+}
+
+void delate(const char* s)
+{
+	sqlite3* DBCal;
+
+	int exit = sqlite3_open(s, &DBCal);
+
+	string sql = "DELETE FROM calevents";
+	sqlite3_exec(DBCal, sql.c_str(), callback, NULL, NULL);
+}
+
 void select(const char* s)
 {
 	sqlite3* DBCal;
