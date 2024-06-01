@@ -8,6 +8,8 @@ using namespace std;
 
 void createDBCal(const char* s);
 void createTable(const char* s);
+void update(const char* s);
+void delate(const char* s);
 
 
 
