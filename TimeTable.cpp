@@ -7,6 +7,8 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
         // obsługa wyjąku
     }
 
+    select(dir);
+
     background.setSize(sf::Vector2f(width, height));
     background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tła
 
@@ -30,8 +32,6 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
             }
         }
     }
-
-    selectData(dir);
     
     for (int i = 0; i < DAYS_IN_WEEK; ++i) {
         sf::Text text;
@@ -84,12 +84,15 @@ void TimeTable::draw(sf::RenderWindow& window)
 {
     window.draw(background);
     window.draw(header);
-    for (int i = 0; i < 7; ++i) {
-        for (int j = 0; j < 10; ++j) {
+    for (int i = 0; i < 7; ++i) 
+    {
+        for (int j = 0; j < 10; ++j) 
+        {
             window.draw(table[i][j]);
         }
     }
-    for (const auto& day : days) {
+    for (const auto& day : days) 
+    {
         window.draw(day);
     }
     window.draw(addButton);
@@ -98,17 +101,25 @@ void TimeTable::draw(sf::RenderWindow& window)
     window.draw(backButton);
 }
 
-void TimeTable::handleMouseClick(sf::Vector2f mousePos) {
-    if (addButton.getGlobalBounds().contains(mousePos)) {
-        insertData(dir);
+void TimeTable::handleMouseClick(sf::Vector2f mousePos) 
+{
+    if (addButton.getGlobalBounds().contains(mousePos)) 
+    {
+        insert(dir);
+        select(dir);
     }
-    else if (removeButton.getGlobalBounds().contains(mousePos)) {
-        std::cout << "Usuniecie wydarzenia" << std::endl;
+    else if (removeButton.getGlobalBounds().contains(mousePos)) 
+    {
+        delate(dir);
+        select(dir);
     }
-    else if (editButton.getGlobalBounds().contains(mousePos)) {
-        std::cout << "Edycja wydarzenia" << std::endl;
+    else if (editButton.getGlobalBounds().contains(mousePos)) 
+    {
+        update(dir);
+        select(dir);
     } 
-    else if (backButton.getGlobalBounds().contains(mousePos)) {
+    else if (backButton.getGlobalBounds().contains(mousePos)) 
+    {
         currentState = State::Menu;
     }
 }

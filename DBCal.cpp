@@ -84,7 +84,7 @@ void update(const char* s)
 		sqlite3_free(messageError);
 	}
 	else
-		cout << "Records created Sucessfully!" << endl;
+		cout << "Zaaktualizowano" << endl;
 
 
 }
