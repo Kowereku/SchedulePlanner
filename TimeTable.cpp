@@ -1,4 +1,5 @@
 #include "TimeTable.h"
+#include "DBCal.h"
 
 TimeTable::TimeTable(float width, float height, State& state) : currentState(state)
 {
@@ -29,6 +30,8 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
             }
         }
     }
+
+    selectData(dir);
     
     for (int i = 0; i < DAYS_IN_WEEK; ++i) {
         sf::Text text;
@@ -97,7 +100,7 @@ void TimeTable::draw(sf::RenderWindow& window)
 
 void TimeTable::handleMouseClick(sf::Vector2f mousePos) {
     if (addButton.getGlobalBounds().contains(mousePos)) {
-        std::cout << "Dodanie wydarzenia" << std::endl;
+        insertData(dir);
     }
     else if (removeButton.getGlobalBounds().contains(mousePos)) {
         std::cout << "Usuniecie wydarzenia" << std::endl;

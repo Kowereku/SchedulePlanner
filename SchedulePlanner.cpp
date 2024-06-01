@@ -9,7 +9,6 @@
 
 int main() {
     sqlite3* DBCal;
-    const char* dir = ".\SchedulePlanner\DataBaseCalendar.db";
 
     createDBCal(dir);
     createTable(dir);

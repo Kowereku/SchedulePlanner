@@ -1,5 +1,6 @@
 #include "DBCal.h"
 
+
 void createDBCal(const char* s)
 {
 	sqlite3* DBCal;
@@ -8,9 +9,7 @@ void createDBCal(const char* s)
 	exit = sqlite3_open(s, &DBCal);
 
 	sqlite3_close(DBCal);
-
 }
-
 void createTable(const char* s)
 {
 	sqlite3* DBCal;
@@ -48,6 +47,46 @@ void createTable(const char* s)
 	{
 		cerr << e.what();
 	}
+}
 
+void insert(const char* s)
+{
+	sqlite3* DBCal;
+	char* messageError;
 
+	int exit = sqlite3_open(s, &DBCal);
+
+	string sql("INSERT INTO calevents (name, desc, type, start, end) VALUES ('Spotkanie', 'Zebranie Zarzadu', 'NORMAL', 1716962400, 1716968700);");
+
+	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
+	if (exit != SQLITE_OK)
+	{
+		cerr << "Blad w dodawaniu" << endl;
+		sqlite3_free(messageError);
+	}
+	else
+		cout << "Dodano" << endl;
+}
+
+void select(const char* s)
+{
+	sqlite3* DBCal;
+
+	int exit = sqlite3_open(s, &DBCal);
+
+	string sql = "SELECT * FROM calevents;";
+
+	sqlite3_exec(DBCal, sql.c_str(), callback, NULL, NULL);
+}
+
+static int callback(void* NotUsed, int argc, char** argv, char** azColName) // argc - argument counter, argv - argument value, azColName - name of columns in db
+{
+	for (int i = 0; i < argc; i++)
+	{
+		cout << azColName[i] << ": " << argv[i] << endl;
+	}
+
+	cout << endl;
+
+	return 0;
 }
