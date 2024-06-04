@@ -27,5 +27,7 @@ private:
 	sf::Text editButton;
 	sf::Text backButton;
 	State& currentState;
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 };
 

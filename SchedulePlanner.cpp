@@ -13,7 +13,7 @@ int main() {
     createDBCal(dir);
     createTable(dir);
         
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Main Menu", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Main Menu", sf::Style::Close);
 
     State state = State::Menu;
 

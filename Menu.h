@@ -22,5 +22,8 @@ private:
     sf::Text header;
     sf::Font font;
     State& currentState;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
+
 };
 

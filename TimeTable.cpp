@@ -3,20 +3,29 @@
 
 TimeTable::TimeTable(float width, float height, State& state) : currentState(state)
 {
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("Calligraphy.ttf")) {
         // obsługa wyjąku
     }
 
     select(dir);
 
-    background.setSize(sf::Vector2f(width, height));
-    background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tła
+
+    if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
+    {
+        // obsługa wyjątku
+        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+    }
+
+    backgroundSprite.setTexture(backgroundTexture);
+
+    //background.setSize(sf::Vector2f(width, height));
+    //background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tła
 
     header.setFont(font);
     header.setString("Plan Tygodnia");
-    header.setCharacterSize(50);
-    header.setFillColor(sf::Color::White);
-    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 20 - 30));
+    header.setCharacterSize(70);
+    header.setFillColor(sf::Color::Black);
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 40 - 30 ));
 
     float cellWidth = width / 8;
     float cellHeight = height / 15;
@@ -60,29 +69,33 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
     }
 
     addButton.setFont(font);
+    addButton.setCharacterSize(50);
     addButton.setString("Dodaj wydarzenie");
-    addButton.setFillColor(sf::Color::White);
-    addButton.setPosition(sf::Vector2f(width / 4 - addButton.getGlobalBounds().width / 2, height - 140));
+    addButton.setFillColor(sf::Color::Black);
+    addButton.setPosition(sf::Vector2f(width / 4 - addButton.getGlobalBounds().width / 2, height - 180));
 
     removeButton.setFont(font);
+    removeButton.setCharacterSize(50);
     removeButton.setString("Usun wydarzenie");
-    removeButton.setFillColor(sf::Color::White);
-    removeButton.setPosition(sf::Vector2f(2 * width / 4 - removeButton.getGlobalBounds().width / 2, height - 140));
+    removeButton.setFillColor(sf::Color::Black);
+    removeButton.setPosition(sf::Vector2f(2 * width / 4 - removeButton.getGlobalBounds().width / 2, height - 180));
 
     editButton.setFont(font);
+    editButton.setCharacterSize(50);
     editButton.setString("Edytuj wydarzenie");
-    editButton.setFillColor(sf::Color::White);
-    editButton.setPosition(sf::Vector2f(3 * width / 4 - editButton.getGlobalBounds().width / 2, height - 140));
+    editButton.setFillColor(sf::Color::Black);
+    editButton.setPosition(sf::Vector2f(3 * width / 4 - editButton.getGlobalBounds().width / 2, height - 180));
 
     backButton.setFont(font);
+    backButton.setCharacterSize(50);
     backButton.setString("Powrot");
-    backButton.setFillColor(sf::Color::White);
-    backButton.setPosition(sf::Vector2f(width / 2 - backButton.getGlobalBounds().width / 2, height - 60));
+    backButton.setFillColor(sf::Color::Black);
+    backButton.setPosition(sf::Vector2f(width / 2 - backButton.getGlobalBounds().width / 2, height - 100));
 }
 
 void TimeTable::draw(sf::RenderWindow& window)
 {
-    window.draw(background);
+    window.draw(backgroundSprite);
     window.draw(header);
     for (int i = 0; i < 7; ++i) 
     {
