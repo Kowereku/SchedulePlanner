@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Menu.h"
 #include "TimeTable.h"
+#include "Adding.h"
 #include "sqlite3.h"
 #include "DBCal.h"
 
@@ -13,12 +14,13 @@ int main() {
     createDBCal(dir);
     createTable(dir);
         
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Main Menu", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Main Menu", sf::Style::Close);
 
     State state = State::Menu;
 
     Menu menu(window.getSize().x, window.getSize().y, state);
     TimeTable timetable(window.getSize().x, window.getSize().y, state);
+    Adding adding(window.getSize().x, window.getSize().y, state);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -32,11 +34,20 @@ int main() {
                 {
                 case (State::Menu):
                     menu.handleMouseClick(mousePos); break;
-                
+
                 case (State::TimeTable):
                     timetable.handleMouseClick(mousePos); break;
+                case (State::Adding):
+                    adding.handleEvent(event); break;
                 }
-
+            }
+            else if (event.type == sf::Event::TextEntered)
+            {
+                switch (state)
+                {
+                case State::Adding:
+                    adding.handleEvent(event); break;
+                }
             }
         }
         window.clear();
@@ -46,6 +57,8 @@ int main() {
             menu.draw(window); break;
         case (State::TimeTable):
             timetable.draw(window); break;
+        case (State::Adding):
+            adding.draw(window); break;
         }
         window.display();
     }

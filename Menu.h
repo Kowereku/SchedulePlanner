@@ -6,7 +6,7 @@
 #include <iostream>
 #include "State.h"
 
-#define MENU_ITEMS 4
+constexpr auto MENU_ITEMS = 4;
 
 
 
