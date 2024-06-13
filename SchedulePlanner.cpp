@@ -2,6 +2,7 @@
 #include <SFML/Window/Mouse.hpp>
 #include <iostream>
 #include "Menu.h"
+#include "Authors.h"
 #include "TimeTable.h"
 #include "Adding.h"
 #include "Delete.h"
@@ -20,6 +21,7 @@ int main() {
     State state = State::Menu;
 
     Menu menu(window.getSize().x, window.getSize().y, state);
+    Authors authors(window.getSize().x, window.getSize().y, state);
     TimeTable timetable(window.getSize().x, window.getSize().y, state);
     Adding adding(window.getSize().x, window.getSize().y, state);
     Delete Delete(window.getSize().x, window.getSize().y, state);
@@ -42,7 +44,8 @@ int main() {
                     adding.handleEvent(event); break;
                 case (State::Delete):
                     Delete.handleEventDel(mousePos); break;
-
+                case (State::Authors):
+                    Delete.handleEventDel(mousePos); break;
                 }
                 
             }
@@ -60,6 +63,8 @@ int main() {
         {
         case (State::Menu):
             menu.draw(window); break;
+        case (State::Authors):
+            authors.draw(window); break;
         case (State::TimeTable):
             timetable.draw(window); break;
         case (State::Adding):

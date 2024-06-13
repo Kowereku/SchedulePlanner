@@ -73,7 +73,7 @@ void Menu::handleMouseClick(sf::Vector2f mousePos)
             }
             else if (item.getString() == "Autorzy") 
             {
-                cout << "Wcisnieto autorzy" << endl;
+                currentState = State::Authors;
             }
             else if (item.getString() == "Wyjdz") 
             {
