@@ -124,8 +124,9 @@ void TimeTable::handleMouseClick(sf::Vector2f mousePos)
     }
     else if (removeButton.getGlobalBounds().contains(mousePos)) 
     {
-        delate(dir);
-        select(dir);
+        currentState = State::Delete;
+        /*delate(dir);
+        select(dir);*/
     }
     else if (editButton.getGlobalBounds().contains(mousePos)) 
     {

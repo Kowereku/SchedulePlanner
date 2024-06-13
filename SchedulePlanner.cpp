@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "TimeTable.h"
 #include "Adding.h"
+#include "Delete.h"
 #include "sqlite3.h"
 #include "DBCal.h"
 
@@ -21,6 +22,7 @@ int main() {
     Menu menu(window.getSize().x, window.getSize().y, state);
     TimeTable timetable(window.getSize().x, window.getSize().y, state);
     Adding adding(window.getSize().x, window.getSize().y, state);
+    Delete Delete(window.getSize().x, window.getSize().y, state);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -38,7 +40,11 @@ int main() {
                     timetable.handleMouseClick(mousePos); break;
                 case (State::Adding):
                     adding.handleEvent(event); break;
+                case (State::Delete):
+                    Delete.handleEventDel(mousePos); break;
+
                 }
+                
             }
             else if (event.type == sf::Event::TextEntered)
             {
@@ -58,6 +64,8 @@ int main() {
             timetable.draw(window); break;
         case (State::Adding):
             adding.draw(window); break;
+        case (State::Delete):
+            Delete.draw(window); break;
         }
         window.display();
     }
