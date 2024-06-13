@@ -34,7 +34,6 @@ int main() {
                 {
                 case (State::Menu):
                     menu.handleMouseClick(mousePos); break;
-
                 case (State::TimeTable):
                     timetable.handleMouseClick(mousePos); break;
                 case (State::Adding):

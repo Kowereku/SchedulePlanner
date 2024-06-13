@@ -37,11 +37,11 @@ void createTable(const char* s)
 
 		if (exit != SQLITE_OK)
 		{
-			cerr << "Nie dziala tabela :(" << endl;
+			cerr << "Nie dziala baza danych" << endl;
 			sqlite3_free(messaggeError);
 		}
 		else
-			cout << "Dziala :DD" << endl;
+			cout << "Polaczono z baza danych" << endl;
 		sqlite3_close(DBCal);
 	}
 	catch (const exception& e)
