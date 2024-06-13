@@ -50,14 +50,14 @@ void createTable(const char* s)
 	}
 }
 
-void insert(const char* s)
+void insert(const char* s, string name, string desc, string type, string day, string starth, string endh)
 {
 	sqlite3* DBCal;
 	char* messageError;
 
 	int exit = sqlite3_open(s, &DBCal);
 
-	string sql("INSERT INTO calevents (name, desc, type, day, start, end) VALUES ('Spotkanie', 'Zebranie Zarzadu', 'NORMAL', 'Piatek', '18:00', '20:00');");
+	string sql("INSERT INTO calevents (name, desc, type, day, start, end) VALUES ('" + name + "', '" + desc + "', '" + type + "', '" + day + "', '" + starth + "', '" + endh + "');");
 
 	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK)
