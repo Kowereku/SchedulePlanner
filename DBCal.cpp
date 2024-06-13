@@ -21,8 +21,9 @@ void createTable(const char* s)
 		"name	TEXT NOT NULL,"
 		"desc	TEXT,"
 		"type	TEXT NOT NULL DEFAULT 'NORMAL',"
-		"start	INTEGER NOT NULL,"
-		"end	INTEGER,"
+		"day	TEXT NOT NULL,"
+		"start	TEXT NOT NULL,"
+		"end	TEXT,"
 		"PRIMARY KEY(id));";
 
 
@@ -36,11 +37,11 @@ void createTable(const char* s)
 
 		if (exit != SQLITE_OK)
 		{
-			cerr << "Nie dziala tabela :(" << endl;
+			cerr << "Nie dziala baza danych" << endl;
 			sqlite3_free(messaggeError);
 		}
 		else
-			cout << "Dziala :DD" << endl;
+			cout << "Polaczono z baza danych" << endl;
 		sqlite3_close(DBCal);
 	}
 	catch (const exception& e)
@@ -56,7 +57,7 @@ void insert(const char* s)
 
 	int exit = sqlite3_open(s, &DBCal);
 
-	string sql("INSERT INTO calevents (name, desc, type, start, end) VALUES ('Spotkanie', 'Zebranie Zarzadu', 'NORMAL', 1716962400, 1716968700);");
+	string sql("INSERT INTO calevents (name, desc, type, day, start, end) VALUES ('Spotkanie', 'Zebranie Zarzadu', 'NORMAL', 'Piatek', '18:00', '20:00');");
 
 	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK)

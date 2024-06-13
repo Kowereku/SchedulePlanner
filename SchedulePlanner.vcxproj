@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Adding.cpp" />
     <ClCompile Include="DBCal.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="SchedulePlanner.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="TimeTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Adding.h" />
     <ClInclude Include="DBCal.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="sqlite3.h" />

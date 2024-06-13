@@ -118,8 +118,9 @@ void TimeTable::handleMouseClick(sf::Vector2f mousePos)
 {
     if (addButton.getGlobalBounds().contains(mousePos)) 
     {
-        insert(dir);
-        select(dir);
+        currentState = State::Adding;
+        //insert(dir);
+        //select(dir);
     }
     else if (removeButton.getGlobalBounds().contains(mousePos)) 
     {
