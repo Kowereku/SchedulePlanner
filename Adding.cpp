@@ -108,6 +108,12 @@ void Adding::handleEvent(sf::Event& event)
             if (addButton.getGlobalBounds().contains(mousePos))
             {
             insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+            inputTexts[0].setString("");
+            inputTexts[1].setString("");
+            inputTexts[2].setString("");
+            inputTexts[3].setString("");
+            inputTexts[4].setString("");
+            inputTexts[5].setString("");
             select(dir);
             currentState = State::TimeTable;
             }

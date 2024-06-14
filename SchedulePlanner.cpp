@@ -11,8 +11,6 @@
 
 
 int main() {
-    sqlite3* DBCal;
-
     createDBCal(dir);
     createTable(dir);
         

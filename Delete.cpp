@@ -4,17 +4,21 @@
 Delete::Delete(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("Calligraphy.ttf")) {
-        // obs³uga wyj¹ku
+        // obsï¿½uga wyjï¿½ku
     }
-
-    select(dir);
-
 
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
-        // obs³uga wyj¹tku
-        std::cerr << "Nie mo¿na za³adowaæ obrazka t³a" << std::endl;
+        // obsï¿½uga wyjï¿½tku
+        std::cerr << "Nie moï¿½na zaï¿½adowaï¿½ obrazka tï¿½a" << std::endl;
     }
+
+    widthPub = width;
+    heightPub = height;
+
+    display = select(dir);
+    clock.restart();
+    updateEvents(width, height);
 
     backgroundSprite.setTexture(backgroundTexture);
 
@@ -75,6 +79,11 @@ Delete::Delete(float width, float height, State& state) : currentState(state)
 
 void Delete::draw(sf::RenderWindow& window)
 {
+    if (clock.getElapsedTime() > refreshTime)
+    {
+        updateEvents(widthPub, heightPub);
+        clock.restart();
+    }
     window.draw(backgroundSprite);
     window.draw(header);
     for (int i = 0; i < 7; ++i)
@@ -88,18 +97,95 @@ void Delete::draw(sf::RenderWindow& window)
     {
         window.draw(day);
     }
-
     window.draw(backButton);
+    for (const auto& txt : displayTexts)
+    {
+        window.draw(txt);
+    }
 }
 
 void Delete::handleEventDel(sf::Vector2f event)
 {
-    if (addButton.getGlobalBounds().contains(event))
-    {
-        currentState = State::Delete;
-    }
-    else if (backButton.getGlobalBounds().contains(event))
+    if (backButton.getGlobalBounds().contains(event))
     {
         currentState = State::TimeTable;
+    }
+    for (int i = 0; i < displayTexts.size(); ++i)
+    {
+        if (displayTexts[i].getGlobalBounds().contains(event))
+        {
+            int eventId = displayIds[i];
+            auto found = std::find_if(display.begin(), display.end(), [eventId](const Event& event) {
+                return event.id == eventId;
+                });
+            if (found != display.end())
+            {
+                deleteRec(dir, found->id);
+            }
+            break;
+        }
+    }
+}
+
+void Delete::updateEvents(float width, float height)
+{
+    display = select(dir);
+    displayTexts.clear();
+    int counterPon = 1;
+    int counterWt = 1;
+    int counterSr = 1;
+    int counterCzw = 1;
+    int counterPt = 1;
+    int counterSob = 1;
+    int counterNd = 1;
+    for (const auto& event : display)
+    {
+        sf::Text text;
+        text.setFont(font);
+        text.setCharacterSize(18);
+        text.setFillColor(sf::Color::Black);
+
+        std::string eventDetails = event.name + "\n" +
+            event.desc + "\n" +
+            event.starth + " - " + event.endh;
+
+        if (event.day == "Poniedzialek")
+        {
+            text.setPosition(sf::Vector2f((0.5) * width / 8 + 10, counterPon * height / 15 + 98));
+            counterPon++;
+        }
+        else if (event.day == "Wtorek")
+        {
+            text.setPosition(sf::Vector2f((1.5) * width / 8 + 10, counterWt * height / 15 + 98));
+            counterWt++;
+        }
+        else if (event.day == "Sroda")
+        {
+            text.setPosition(sf::Vector2f((2.5) * width / 8 + 10, counterSr * height / 15 + 98));
+            counterSr++;
+        }
+        else if (event.day == "Czwartek")
+        {
+            text.setPosition(sf::Vector2f((3.5) * width / 8 + 10, counterCzw * height / 15 + 98));
+            counterCzw++;
+        }
+        else if (event.day == "Piatek")
+        {
+            text.setPosition(sf::Vector2f((4.5) * width / 8 + 10, counterPt * height / 15 + 98));
+            counterPt++;
+        }
+        else if (event.day == "Sobota")
+        {
+            text.setPosition(sf::Vector2f((5.5) * width / 8 + 10, counterSob * height / 15 + 98));
+            counterSob++;
+        }
+        else if (event.day == "Niedziela")
+        {
+            text.setPosition(sf::Vector2f((6.5) * width / 8 + 10, counterNd * height / 15 + 100));
+            counterNd++;
+        }
+        text.setString(eventDetails);
+        displayTexts.push_back(text);
+        displayIds.push_back(event.id);
     }
 }

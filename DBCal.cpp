@@ -16,15 +16,14 @@ void createTable(const char* s)
 
 	string sql =
 		"CREATE TABLE IF NOT EXISTS calevents ("
-		"id	INTEGER UNIQUE,"
+		"id	INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,"
 		"priority	INTEGER NOT NULL DEFAULT 0,"
 		"name	TEXT NOT NULL,"
 		"desc	TEXT,"
 		"type	TEXT NOT NULL DEFAULT 'NORMAL',"
 		"day	TEXT NOT NULL,"
 		"start	TEXT NOT NULL,"
-		"end	TEXT,"
-		"PRIMARY KEY(id));";
+		"end	TEXT);";
 
 
 	try
@@ -67,6 +66,7 @@ void insert(const char* s, string name, string desc, string type, string day, st
 	}
 	else
 		cout << "Dodano" << endl;
+	sqlite3_close(DBCal);
 }
 
 void update(const char* s)
@@ -90,14 +90,22 @@ void update(const char* s)
 
 }
 
-void delete_rec(const char* s)
+void deleteRec(const char* s, int id)
 {
 	sqlite3* DBCal;
 
 	int exit = sqlite3_open(s, &DBCal);
 
-	string sql = "DELETE FROM calevents";
-	sqlite3_exec(DBCal, sql.c_str(), callback, NULL, NULL);
+	string sql = "DELETE FROM calevents WHERE id = ?";
+	sqlite3_stmt* stmt;
+	sqlite3_prepare_v2(DBCal, sql.c_str(), -1, &stmt, nullptr);
+	sqlite3_bind_int(stmt, 1, id);
+	if (sqlite3_step(stmt) != SQLITE_DONE) {
+		cerr << "Error deleting event: " << sqlite3_errmsg(DBCal) << std::endl;
+	}
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(DBCal);
 }
 
 std::vector<Event> select(const char* s)
@@ -106,7 +114,7 @@ std::vector<Event> select(const char* s)
 	std::vector<Event> events;
 
 	if (sqlite3_open(s, &DBCal)) {
-		std::cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << std::endl;
+		cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << endl;
 		return events;
 	}
 
@@ -114,12 +122,12 @@ std::vector<Event> select(const char* s)
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(DBCal, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-		std::cerr << "Nie można wykonać zapytania: " << sqlite3_errmsg(DBCal) << std::endl;
+		cerr << "Nie można wykonać zapytania: " << sqlite3_errmsg(DBCal) << endl;
 		return events;
 	}
 
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
-		int id = sqlite3_column_int(stmt, 1);
+		int id = sqlite3_column_int(stmt, 0);
 		string title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
 		string desc = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
 		string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
@@ -130,6 +138,7 @@ std::vector<Event> select(const char* s)
 	}
 
 	sqlite3_finalize(stmt);
+	sqlite3_close(DBCal);
 
 	return events;
 }
