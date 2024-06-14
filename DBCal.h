@@ -1,5 +1,6 @@
 #pragma once
 #include "sqlite3.h"
+#include "Event.h"
 #include <iostream>
 #include <string>
 
@@ -11,6 +12,6 @@ void createDBCal(const char* s);
 void createTable(const char* s);
 void update(const char* s);
 void delate(const char* s);
-void insert(const char* s);
+void insert(const char* s, string name, string desc, string type, string day, string starth, string endh);
 void select(const char* s);
 static int callback(void* NotUsed, int argc, char** argv, char** azColName);

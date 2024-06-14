@@ -88,7 +88,7 @@ void Adding::handleEvent(sf::Event& event)
                         currentString.pop_back();
                     }
                 }
-                else if (inputTexts[selectedInputBox].getString().getSize() < 30)
+                else if (inputTexts[selectedInputBox].getString().getSize() < 10)
                 {
                     currentString += static_cast<char>(event.text.unicode);
                 }
@@ -107,7 +107,7 @@ void Adding::handleEvent(sf::Event& event)
             }
             if (addButton.getGlobalBounds().contains(mousePos))
             {
-            insert(dir);
+            insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
             select(dir);
             currentState = State::TimeTable;
             }
