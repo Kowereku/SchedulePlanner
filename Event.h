@@ -9,19 +9,15 @@ using namespace std;
 class Event
 {
 public:
-	Event(string n, string d, string t, string day, string sh, string eh);
-	string getName();
-	string getDesc();
-	string getType();
-	string getDay();
-	string getStartH();
-	string getEndH();
-private:
+	Event(int id, string n, string d, string t, string day, string sh, string eh);
 	string name;
 	string desc;
 	string type;
 	string day;
 	string starth;
 	string endh;
+private:
+	int id;
+
 };
 

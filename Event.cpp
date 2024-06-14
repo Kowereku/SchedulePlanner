@@ -1,7 +1,8 @@
 #include "Event.h"
 
-Event::Event(string n, string d, string t, string day, string sh, string eh)
+Event::Event(int id, string n, string d, string t, string day, string sh, string eh)
 {
+    this->id = id;
     this->name = n;
     this->desc = d;
     this->type = t;
@@ -10,32 +11,3 @@ Event::Event(string n, string d, string t, string day, string sh, string eh)
     this->endh = eh;
 }
 
-string Event::getName()
-{
-    return name;
-}
-
-string Event::getDesc()
-{
-    return desc;
-}
-
-string Event::getType()
-{
-    return type;
-}
-
-string Event::getDay()
-{
-    return day;
-}
-
-string Event::getStartH()
-{
-    return starth;
-}
-
-string Event::getEndH()
-{
-    return endh;
-}

@@ -4,11 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "Authors.h"
 #include "State.h"
-
-constexpr auto MENU_ITEMS = 1;
-
 
 
 class Authors {

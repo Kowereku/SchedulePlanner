@@ -5,11 +5,11 @@
 Adding::Adding(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("arial.ttf")) {
-        // obs³uga wyj¹tku
+        // obsï¿½uga wyjï¿½tku
     }
 
     background.setSize(sf::Vector2f(width, height));
-    background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor t³a
+    background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tï¿½a
 
     for (int i = 0; i < ITEMS_TO_ADD; ++i) {
         sf::Text text;
@@ -81,14 +81,14 @@ void Adding::handleEvent(sf::Event& event)
         {
             if (selectedInputBox >= 0 && selectedInputBox < inputTexts.size()) {
                 std::string currentString = inputTexts[selectedInputBox].getString();
-                if (event.text.unicode == '\b') // Obs³uga klawisza backspace
+                if (event.text.unicode == '\b') // Obsluga klawisza backspace
                 { 
                     if (!currentString.empty()) 
                     {
                         currentString.pop_back();
                     }
                 }
-                else if (inputTexts[selectedInputBox].getString().getSize() < 10)
+                else if (inputTexts[selectedInputBox].getString().getSize() < 20)
                 {
                     currentString += static_cast<char>(event.text.unicode);
                 }

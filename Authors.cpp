@@ -7,32 +7,16 @@ Authors::Authors(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("charlotte.ttf")) 
     {
-        // obs³uga wyj¹tku
+        // obsï¿½uga wyjï¿½tku
     }
 
     if (!backgroundTexture.loadFromFile("tlokal.jpg"))
     {
-        // obs³uga wyj¹tku
-        std::cerr << "Nie mo¿na za³adowaæ obrazka t³a" << std::endl;
+        // obsï¿½uga wyjï¿½tku
+        std::cerr << "Nie moï¿½na zaï¿½adowaï¿½ obrazka tï¿½a" << std::endl;
     }
 
     backgroundSprite.setTexture(backgroundTexture);
-
-
-    for (int i = 0; i < MENU_ITEMS; ++i) {
-        sf::Text text;
-        text.setFont(font);
-        switch (i)
-        {
-        case 0:
-            text.setString("Wydz"); break;
-        }
-        text.setCharacterSize(40);
-        text.setFillColor(sf::Color(63, 63, 63));
-        text.setPosition(sf::Vector2f(width / 2 - text.getGlobalBounds().width / 2, height / (MENU_ITEMS + 1) * (0.7 * i + 1) + 200));
-        menuItems.push_back(text);
-    }
-
 
     header.setFont(font);
     header.setString("Kalendarz");

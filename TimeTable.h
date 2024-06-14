@@ -5,6 +5,9 @@
 #include <string>
 #include <iostream>
 #include "State.h"
+#include "Event.h"
+
+using namespace std;
 
 #define DAYS_IN_WEEK 7
 
@@ -14,13 +17,18 @@ public:
 	TimeTable(float width, float height, State& state);
 	void draw(sf::RenderWindow& window);
 	void handleMouseClick(sf::Vector2f mousePos);
+	void updateEvents(float width, float height);
+	float widthPub;
+	float heightPub;
 
 private:
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::Text header;
 	sf::RectangleShape table[7][10];
-	std::vector<sf::Text> days;
+	vector<sf::Text> days;
+	vector<Event> display;
+	vector<sf::Text> displayTexts;
 	sf::Text tableText;
 	sf::Text addButton;
 	sf::Text removeButton;
@@ -29,5 +37,7 @@ private:
 	State& currentState;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
+	sf::Clock clock;
+	sf::Time refreshTime;
 };
 

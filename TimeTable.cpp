@@ -7,19 +7,20 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
         // obsługa wyjąku
     }
 
-    select(dir);
-
-
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
         // obsługa wyjątku
         std::cerr << "Nie można załadować obrazka tła" << std::endl;
     }
 
-    backgroundSprite.setTexture(backgroundTexture);
+    widthPub = width;
+    heightPub = height;
 
-    //background.setSize(sf::Vector2f(width, height));
-    //background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tła
+    display = select(dir);
+    clock.restart();
+    updateEvents(width, height);
+
+    backgroundSprite.setTexture(backgroundTexture);
 
     header.setFont(font);
     header.setString("Plan Tygodnia");
@@ -95,6 +96,11 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
 
 void TimeTable::draw(sf::RenderWindow& window)
 {
+    if (clock.getElapsedTime() > refreshTime)
+    {
+        updateEvents(widthPub, heightPub);
+        clock.restart();
+    }
     window.draw(backgroundSprite);
     window.draw(header);
     for (int i = 0; i < 7; ++i) 
@@ -112,6 +118,11 @@ void TimeTable::draw(sf::RenderWindow& window)
     window.draw(removeButton);
     window.draw(editButton);
     window.draw(backButton);
+    for (const auto& txt : displayTexts)
+    {
+        window.draw(txt);
+    }
+
 }
 
 void TimeTable::handleMouseClick(sf::Vector2f mousePos) 
@@ -119,22 +130,82 @@ void TimeTable::handleMouseClick(sf::Vector2f mousePos)
     if (addButton.getGlobalBounds().contains(mousePos)) 
     {
         currentState = State::Adding;
-        //insert(dir);
-        //select(dir);
+
     }
     else if (removeButton.getGlobalBounds().contains(mousePos)) 
     {
+        delete_rec(dir);
         currentState = State::Delete;
-        /*delate(dir);
-        select(dir);*/
     }
     else if (editButton.getGlobalBounds().contains(mousePos)) 
     {
-        update(dir);
-        select(dir);
+
     } 
     else if (backButton.getGlobalBounds().contains(mousePos)) 
     {
         currentState = State::Menu;
+    }
+}
+
+void TimeTable::updateEvents(float width, float height)
+{
+    display = select(dir);
+    displayTexts.clear(); // Czyszczenie starych tekstów
+    int counterPon = 1;
+    int counterWt = 1;
+    int counterSr = 1;
+    int counterCzw = 1;
+    int counterPt = 1;
+    int counterSob = 1;
+    int counterNd = 1;
+    for (const auto& event : display)
+    {
+        sf::Text text;
+        text.setFont(font);
+        text.setCharacterSize(18);
+        text.setFillColor(sf::Color::Black);
+
+        std::string eventDetails = event.name + "\n" +
+            event.desc + "\n" +
+            event.starth + " - " + event.endh;
+
+        if (event.day == "Poniedzialek")
+        {
+            text.setPosition(sf::Vector2f((0.5) * width / 8 + 10, counterPon * height / 15 + 98));
+            counterPon++;
+        }
+        else if (event.day == "Wtorek")
+        {
+            text.setPosition(sf::Vector2f((1.5) * width / 8 + 10, counterWt * height / 15 + 98));
+            counterWt++;
+        }
+        else if (event.day == "Sroda")
+        {
+            text.setPosition(sf::Vector2f((2.5) * width / 8 + 10, counterSr * height / 15 + 98));
+            counterSr++;
+        }
+        else if (event.day == "Czwartek")
+        {
+            text.setPosition(sf::Vector2f((3.5) * width / 8 + 10, counterCzw * height / 15 + 98));
+            counterCzw++;
+        }
+        else if (event.day == "Piatek")
+        {
+            text.setPosition(sf::Vector2f((4.5) * width / 8 + 10, counterPt * height / 15 + 98));
+            counterPt++;
+        }
+        else if (event.day == "Sobota")
+        {
+            text.setPosition(sf::Vector2f((5.5) * width / 8 + 10, counterSob * height / 15 + 98));
+            counterSob++;
+        }
+        else if (event.day == "Niedziela")
+        {
+            text.setPosition(sf::Vector2f((6.5) * width / 8 + 10, counterNd * height / 15 + 100));
+            counterNd++;
+        }
+
+        text.setString(eventDetails);
+        displayTexts.push_back(text);
     }
 }

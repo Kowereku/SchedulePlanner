@@ -90,7 +90,7 @@ void update(const char* s)
 
 }
 
-void delate(const char* s)
+void delete_rec(const char* s)
 {
 	sqlite3* DBCal;
 
@@ -100,15 +100,38 @@ void delate(const char* s)
 	sqlite3_exec(DBCal, sql.c_str(), callback, NULL, NULL);
 }
 
-void select(const char* s)
+std::vector<Event> select(const char* s)
 {
 	sqlite3* DBCal;
+	std::vector<Event> events;
 
-	int exit = sqlite3_open(s, &DBCal);
+	if (sqlite3_open(s, &DBCal)) {
+		std::cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << std::endl;
+		return events;
+	}
 
-	string sql = "SELECT * FROM calevents;";
+	const char* sql = "SELECT * FROM calevents";
+	sqlite3_stmt* stmt;
 
-	sqlite3_exec(DBCal, sql.c_str(), callback, NULL, NULL);
+	if (sqlite3_prepare_v2(DBCal, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Nie można wykonać zapytania: " << sqlite3_errmsg(DBCal) << std::endl;
+		return events;
+	}
+
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		int id = sqlite3_column_int(stmt, 1);
+		string title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		string desc = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+		string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+		string day = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+		string starth = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+		string endh = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
+		events.push_back(Event(id, title, desc, type, day, starth, endh));
+	}
+
+	sqlite3_finalize(stmt);
+
+	return events;
 }
 
 static int callback(void* NotUsed, int argc, char** argv, char** azColName) // argc - argument counter, argv - argument value, azColName - name of columns in db
