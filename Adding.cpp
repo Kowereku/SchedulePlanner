@@ -2,6 +2,8 @@
 #include "DBCal.h"
 #include <iostream>
 
+regex timeRegex(R"((0?\d|1\d|2[0-3]):([0-5]?\d))");
+
 Adding::Adding(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("arial.ttf")) {
@@ -107,15 +109,53 @@ void Adding::handleEvent(sf::Event& event)
             }
             if (addButton.getGlobalBounds().contains(mousePos))
             {
-            insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
-            inputTexts[0].setString("");
-            inputTexts[1].setString("");
-            inputTexts[2].setString("");
-            inputTexts[3].setString("");
-            inputTexts[4].setString("");
-            inputTexts[5].setString("");
-            select(dir);
-            currentState = State::TimeTable;
+                string d = inputTexts[3].getString();
+                string sh = inputTexts[4].getString();
+                string eh = inputTexts[5].getString();
+
+                stringstream shTest(sh);
+                string shTemp;
+                vector<int> shResult;
+                while (getline(shTest, shTemp, ':'))
+                {
+                    shResult.push_back(stoi(shTemp));
+                }
+
+                stringstream ehTest(eh);
+                string ehTemp;
+                vector<int> ehResult;
+                while (getline(ehTest, ehTemp, ':'))
+                {
+                    ehResult.push_back(stoi(ehTemp));
+                }
+
+                if (regex_match(sh, timeRegex) && regex_match(eh, timeRegex) && checkIfIsDay(d) && inputTexts[0].getString() != "" && inputTexts[1].getString() != "" && inputTexts[2].getString() != "")
+                {
+                    if (shResult[0] < ehResult[0])
+                    {
+                        insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        inputTexts[0].setString("");
+                        inputTexts[1].setString("");
+                        inputTexts[2].setString("");
+                        inputTexts[3].setString("");
+                        inputTexts[4].setString("");
+                        inputTexts[5].setString("");
+                        select(dir);
+                        currentState = State::TimeTable;
+                    }
+                    else if (shResult[0] = ehResult[0] & shResult[1] < ehResult[1])
+                    {
+                        insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        inputTexts[0].setString("");
+                        inputTexts[1].setString("");
+                        inputTexts[2].setString("");
+                        inputTexts[3].setString("");
+                        inputTexts[4].setString("");
+                        inputTexts[5].setString("");
+                        select(dir);
+                        currentState = State::TimeTable;
+                    }
+                }
             }
             else if (backButton.getGlobalBounds().contains(mousePos))
             {
@@ -123,4 +163,14 @@ void Adding::handleEvent(sf::Event& event)
             }
         }
     }
+}
+
+bool Adding::checkIfIsDay(string d)
+{
+    if (d == "Poniedzialek" || d == "Wtorek" || d == "Sroda" || d == "Czwartek" || d == "Piatek" || d == "Sobota" || d == "Niedziela")
+    {
+        return true;
+    }
+    else
+        return false;
 }

@@ -61,11 +61,9 @@ void insert(const char* s, string name, string desc, string type, string day, st
 	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK)
 	{
-		cerr << "Blad w dodawaniu" << endl;
+		cerr << "Blad w dodawaniu: " << endl;
 		sqlite3_free(messageError);
 	}
-	else
-		cout << "Dodano" << endl;
 	sqlite3_close(DBCal);
 }
 
@@ -81,13 +79,9 @@ void update(const char* s)
 	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK)
 	{
-		cerr << " Error Insert" << endl;
+		cerr << "Blad w aktualizacji: " << endl;
 		sqlite3_free(messageError);
 	}
-	else
-		cout << "Zaaktualizowano" << endl;
-
-
 }
 
 void deleteRec(const char* s, int id)
@@ -101,7 +95,7 @@ void deleteRec(const char* s, int id)
 	sqlite3_prepare_v2(DBCal, sql.c_str(), -1, &stmt, nullptr);
 	sqlite3_bind_int(stmt, 1, id);
 	if (sqlite3_step(stmt) != SQLITE_DONE) {
-		cerr << "Error deleting event: " << sqlite3_errmsg(DBCal) << std::endl;
+		cerr << "Blad w usuwaniu: " << sqlite3_errmsg(DBCal) << std::endl;
 	}
 
 	sqlite3_finalize(stmt);
@@ -141,16 +135,4 @@ std::vector<Event> select(const char* s)
 	sqlite3_close(DBCal);
 
 	return events;
-}
-
-static int callback(void* NotUsed, int argc, char** argv, char** azColName) // argc - argument counter, argv - argument value, azColName - name of columns in db
-{
-	for (int i = 0; i < argc; i++)
-	{
-		cout << azColName[i] << ": " << argv[i] << endl;
-	}
-
-	cout << endl;
-
-	return 0;
 }

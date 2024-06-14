@@ -14,4 +14,3 @@ void update(const char* s);
 void deleteRec(const char* s, int id);
 void insert(const char* s, string name, string desc, string type, string day, string starth, string endh);
 vector<Event> select(const char* s);
-static int callback(void* NotUsed, int argc, char** argv, char** azColName);
