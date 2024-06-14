@@ -2,8 +2,10 @@
 #include <SFML/Window/Mouse.hpp>
 #include <iostream>
 #include "Menu.h"
+#include "Authors.h"
 #include "TimeTable.h"
 #include "Adding.h"
+#include "Delete.h"
 #include "sqlite3.h"
 #include "DBCal.h"
 
@@ -19,8 +21,10 @@ int main() {
     State state = State::Menu;
 
     Menu menu(window.getSize().x, window.getSize().y, state);
+    Authors authors(window.getSize().x, window.getSize().y, state);
     TimeTable timetable(window.getSize().x, window.getSize().y, state);
     Adding adding(window.getSize().x, window.getSize().y, state);
+    Delete Delete(window.getSize().x, window.getSize().y, state);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -38,7 +42,12 @@ int main() {
                     timetable.handleMouseClick(mousePos); break;
                 case (State::Adding):
                     adding.handleEvent(event); break;
+                case (State::Delete):
+                    Delete.handleEventDel(mousePos); break;
+                case (State::Authors):
+                    Delete.handleEventDel(mousePos); break;
                 }
+                
             }
             else if (event.type == sf::Event::TextEntered)
             {
@@ -54,10 +63,14 @@ int main() {
         {
         case (State::Menu):
             menu.draw(window); break;
+        case (State::Authors):
+            authors.draw(window); break;
         case (State::TimeTable):
             timetable.draw(window); break;
         case (State::Adding):
             adding.draw(window); break;
+        case (State::Delete):
+            Delete.draw(window); break;
         }
         window.display();
     }

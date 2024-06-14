@@ -4,7 +4,7 @@ enum class State {
     Menu,
     TimeTable,
     Adding,
-    Deleting,
+    Delete,
     Editing,
     Options,
     Authors
