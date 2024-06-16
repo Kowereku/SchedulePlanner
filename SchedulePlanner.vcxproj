@@ -142,7 +142,6 @@
     <ClCompile Include="Delete.cpp" />
     <ClCompile Include="Editing.cpp" />
     <ClCompile Include="Event.cpp" />
-    <ClCompile Include="Global.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="SchedulePlanner.cpp" />
     <ClCompile Include="sqlite3.c" />
@@ -156,7 +155,6 @@
     <ClInclude Include="Delete.h" />
     <ClInclude Include="Editing.h" />
     <ClInclude Include="Event.h" />
-    <ClInclude Include="Global.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="State.h" />
