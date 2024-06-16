@@ -119,7 +119,7 @@ void Editing::handleEventEdit(sf::Vector2f event)
                 });
             if (found != display.end())
             {
-                globalEventId = found->id;
+                changingInstance.searchID = found->id;
                 changingInstance.updateFields(*found);
                 currentState = State::Changing;
             }

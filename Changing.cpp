@@ -131,7 +131,7 @@ void Changing::handleEvent(sf::Event& event)
                 {
                     if (shResult[0] < ehResult[0])
                     {
-                        update(dir, globalEventId , inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        update(dir, searchID , inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
@@ -142,7 +142,7 @@ void Changing::handleEvent(sf::Event& event)
                     }
                     else if (shResult[0] = ehResult[0] & shResult[1] < ehResult[1])
                     {
-                        update(dir, globalEventId, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        update(dir, searchID, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");

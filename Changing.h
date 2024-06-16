@@ -23,6 +23,7 @@ public:
     void handleEvent(sf::Event& event);
     bool checkIfIsDay(string d);
     void updateFields(Event ev);
+    int searchID;
 
 private:
     int selectedInputBox = NULL;
