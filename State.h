@@ -6,6 +6,6 @@ enum class State {
     Adding,
     Delete,
     Editing,
-    Options,
+    Changing,
     Authors
 };

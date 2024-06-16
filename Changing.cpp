@@ -1,9 +1,9 @@
-#include "Adding.h"
+#include "Changing.h"
 #include <iostream>
 
-regex timeRegexAdd(R"((0?\d|1\d|2[0-3]):([0-5]?\d))");
+regex timeRegexChange(R"((0?\d|1\d|2[0-3]):([0-5]?\d))");
 
-Adding::Adding(float width, float height, State& state) : currentState(state)
+Changing::Changing(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("arial.ttf")) {
         // obs�uga wyj�tku
@@ -12,7 +12,7 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
     background.setSize(sf::Vector2f(width, height));
     background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor t�a
 
-    for (int i = 0; i < ITEMS_TO_ADD; ++i) {
+    for (int i = 0; i < ITEMS_TO_CHANGE; ++i) {
         sf::Text text;
         text.setFont(font);
         switch (i)
@@ -32,16 +32,14 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
         }
 
         text.setFillColor(sf::Color::White);
-        text.setPosition(sf::Vector2f(width / 10 - text.getGlobalBounds().width / 10, height / (ITEMS_TO_ADD) * i));
+        text.setPosition(sf::Vector2f(width / 10 - text.getGlobalBounds().width / 10, height / (ITEMS_TO_CHANGE)*i));
         addItems.push_back(text);
 
-        sf::RectangleShape inputBox;
         inputBox.setSize(sf::Vector2f(width / 2, 50));
         inputBox.setFillColor(sf::Color::White);
-        inputBox.setPosition(sf::Vector2f(width / 2 - inputBox.getSize().x / 2, height / (ITEMS_TO_ADD * 2) * (i * 2 + 1)));
+        inputBox.setPosition(sf::Vector2f(width / 2 - inputBox.getSize().x / 2, height / (ITEMS_TO_CHANGE * 2) * (i * 2 + 1)));
         inputBoxes.push_back(inputBox);
 
-        sf::Text inputText;
         inputText.setFont(font);
         inputText.setFillColor(sf::Color::Black);
         inputText.setPosition(inputBox.getPosition().x + 5, inputBox.getPosition().y + 5);
@@ -49,7 +47,7 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
     }
 
     addButton.setFont(font);
-    addButton.setString("Dodaj");
+    addButton.setString("Zmien");
     addButton.setFillColor(sf::Color::White);
     addButton.setPosition(sf::Vector2f(width - 100, height / 3));
 
@@ -59,7 +57,8 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
     backButton.setPosition(sf::Vector2f(width - 100, (height / 3) * 2));
 }
 
-void Adding::draw(sf::RenderWindow& window) {
+void Changing::draw(sf::RenderWindow& window) {
+
     window.draw(background);
     for (const auto& item : addItems) {
         window.draw(item);
@@ -74,17 +73,17 @@ void Adding::draw(sf::RenderWindow& window) {
     window.draw(backButton);
 }
 
-void Adding::handleEvent(sf::Event& event) 
+void Changing::handleEvent(sf::Event& event)
 {
-    if (event.type == sf::Event::TextEntered) 
+    if (event.type == sf::Event::TextEntered)
     {
-        if (event.text.unicode < 128) 
+        if (event.text.unicode < 128)
         {
             if (selectedInputBox >= 0 && selectedInputBox < inputTexts.size()) {
                 std::string currentString = inputTexts[selectedInputBox].getString();
                 if (event.text.unicode == '\b') // Obsluga klawisza backspace
-                { 
-                    if (!currentString.empty()) 
+                {
+                    if (!currentString.empty())
                     {
                         currentString.pop_back();
                     }
@@ -128,11 +127,11 @@ void Adding::handleEvent(sf::Event& event)
                     ehResult.push_back(stoi(ehTemp));
                 }
 
-                if (regex_match(sh, timeRegexAdd) && regex_match(eh, timeRegexAdd) && checkIfIsDay(d) && inputTexts[0].getString() != "" && inputTexts[1].getString() != "" && inputTexts[2].getString() != "")
+                if (regex_match(sh, timeRegexChange) && regex_match(eh, timeRegexChange) && checkIfIsDay(d) && inputTexts[0].getString() != "" && inputTexts[1].getString() != "" && inputTexts[2].getString() != "")
                 {
                     if (shResult[0] < ehResult[0])
                     {
-                        insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        update(dir, globalEventId , inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
@@ -143,7 +142,7 @@ void Adding::handleEvent(sf::Event& event)
                     }
                     else if (shResult[0] = ehResult[0] & shResult[1] < ehResult[1])
                     {
-                        insert(dir, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        update(dir, globalEventId, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
@@ -156,13 +155,13 @@ void Adding::handleEvent(sf::Event& event)
             }
             else if (backButton.getGlobalBounds().contains(mousePos))
             {
-                currentState = State::TimeTable;
+                currentState = State::Editing;
             }
         }
     }
 }
 
-bool Adding::checkIfIsDay(string d)
+bool Changing::checkIfIsDay(string d)
 {
     if (d == "Poniedzialek" || d == "Wtorek" || d == "Sroda" || d == "Czwartek" || d == "Piatek" || d == "Sobota" || d == "Niedziela")
     {
@@ -170,4 +169,14 @@ bool Adding::checkIfIsDay(string d)
     }
     else
         return false;
+}
+
+void Changing::updateFields(Event ev)
+{
+    inputTexts[0].setString(ev.name);
+    inputTexts[1].setString(ev.desc);
+    inputTexts[2].setString(ev.type);
+    inputTexts[3].setString(ev.day);
+    inputTexts[4].setString(ev.starth);
+    inputTexts[5].setString(ev.endh);
 }

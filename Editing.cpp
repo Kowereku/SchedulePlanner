@@ -1,15 +1,15 @@
-#include "TimeTable.h"
+#include "Editing.h"
 
-TimeTable::TimeTable(float width, float height, State& state) : currentState(state)
+Editing::Editing(float width, float height, State& state, Changing& changing) : currentState(state), changingInstance(changing)
 {
     if (!font.loadFromFile("Calligraphy.ttf")) {
-        // obsługa wyjąku
+        // obs�uga wyj�ku
     }
 
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
-        // obsługa wyjątku
-        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+        // obs�uga wyj�tku
+        std::cerr << "Nie mo�na za�adowa� obrazka t�a" << std::endl;
     }
 
     widthPub = width;
@@ -21,11 +21,12 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
 
     backgroundSprite.setTexture(backgroundTexture);
 
+
     header.setFont(font);
     header.setString("Plan Tygodnia");
     header.setCharacterSize(70);
     header.setFillColor(sf::Color::Black);
-    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 40 - 30 ));
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 40 - 30));
 
     float cellWidth = width / 8;
     float cellHeight = height / 15;
@@ -34,14 +35,14 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
             table[i][j].setSize(sf::Vector2f(cellWidth, cellHeight));
             table[i][j].setOutlineColor(sf::Color::Black);
             table[i][j].setOutlineThickness(1);
-            table[i][j].setPosition(sf::Vector2f((i+0.5) * cellWidth, j * cellHeight + 100));
+            table[i][j].setPosition(sf::Vector2f((i + 0.5) * cellWidth, j * cellHeight + 100));
             if (j == 0)
             {
                 table[i][j].setFillColor(sf::Color(255, 253, 141));
             }
         }
     }
-    
+
     for (int i = 0; i < DAYS_IN_WEEK; ++i) {
         sf::Text text;
         text.setFont(font);
@@ -68,24 +69,6 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
         days.push_back(text);
     }
 
-    addButton.setFont(font);
-    addButton.setCharacterSize(50);
-    addButton.setString("Dodaj wydarzenie");
-    addButton.setFillColor(sf::Color::Black);
-    addButton.setPosition(sf::Vector2f(width / 4 - addButton.getGlobalBounds().width / 2, height - 180));
-
-    removeButton.setFont(font);
-    removeButton.setCharacterSize(50);
-    removeButton.setString("Usun wydarzenie");
-    removeButton.setFillColor(sf::Color::Black);
-    removeButton.setPosition(sf::Vector2f(2 * width / 4 - removeButton.getGlobalBounds().width / 2, height - 180));
-
-    editButton.setFont(font);
-    editButton.setCharacterSize(50);
-    editButton.setString("Edytuj wydarzenie");
-    editButton.setFillColor(sf::Color::Black);
-    editButton.setPosition(sf::Vector2f(3 * width / 4 - editButton.getGlobalBounds().width / 2, height - 180));
-
     backButton.setFont(font);
     backButton.setCharacterSize(50);
     backButton.setString("Powrot");
@@ -93,7 +76,7 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
     backButton.setPosition(sf::Vector2f(width / 2 - backButton.getGlobalBounds().width / 2, height - 100));
 }
 
-void TimeTable::draw(sf::RenderWindow& window)
+void Editing::draw(sf::RenderWindow& window)
 {
     if (clock.getElapsedTime() > refreshTime)
     {
@@ -102,50 +85,50 @@ void TimeTable::draw(sf::RenderWindow& window)
     }
     window.draw(backgroundSprite);
     window.draw(header);
-    for (int i = 0; i < 7; ++i) 
+    for (int i = 0; i < 7; ++i)
     {
-        for (int j = 0; j < 10; ++j) 
+        for (int j = 0; j < 10; ++j)
         {
             window.draw(table[i][j]);
         }
     }
-    for (const auto& day : days) 
+    for (const auto& day : days)
     {
         window.draw(day);
     }
-    window.draw(addButton);
-    window.draw(removeButton);
-    window.draw(editButton);
     window.draw(backButton);
     for (const auto& txt : displayTexts)
     {
         window.draw(txt);
     }
-
 }
 
-void TimeTable::handleMouseClick(sf::Vector2f mousePos) 
+void Editing::handleEventEdit(sf::Vector2f event)
 {
-    if (addButton.getGlobalBounds().contains(mousePos)) 
+    if (backButton.getGlobalBounds().contains(event))
     {
-        currentState = State::Adding;
-
+        currentState = State::TimeTable;
     }
-    else if (removeButton.getGlobalBounds().contains(mousePos)) 
+    for (int i = 0; i < displayTexts.size(); ++i)
     {
-        currentState = State::Delete;
-    }
-    else if (editButton.getGlobalBounds().contains(mousePos)) 
-    {
-        currentState = State::Editing;
-    } 
-    else if (backButton.getGlobalBounds().contains(mousePos)) 
-    {
-        currentState = State::Menu;
+        if (displayTexts[i].getGlobalBounds().contains(event))
+        {
+            int eventId = displayIds[i];
+            auto found = std::find_if(display.begin(), display.end(), [eventId](const Event& event) {
+                return event.id == eventId;
+                });
+            if (found != display.end())
+            {
+                globalEventId = found->id;
+                changingInstance.updateFields(*found);
+                currentState = State::Changing;
+            }
+            break;
+        }
     }
 }
 
-void TimeTable::updateEvents(float width, float height)
+void Editing::updateEvents(float width, float height)
 {
     display = select(dir);
     displayTexts.clear();
@@ -202,8 +185,9 @@ void TimeTable::updateEvents(float width, float height)
             text.setPosition(sf::Vector2f((6.5) * width / 8 + 10, counterNd * height / 15 + 100));
             counterNd++;
         }
-
         text.setString(eventDetails);
         displayTexts.push_back(text);
+        displayIds.push_back(event.id);
     }
 }
+

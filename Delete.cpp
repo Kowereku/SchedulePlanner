@@ -1,5 +1,4 @@
 #include "Delete.h"
-#include "DBCal.h"
 
 Delete::Delete(float width, float height, State& state) : currentState(state)
 {

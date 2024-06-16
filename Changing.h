@@ -7,29 +7,36 @@
 #include <iostream>
 #include <regex>
 #include "State.h"
+#include "Event.h"
 #include "DBCal.h"
+#include "Global.h"
 
 using namespace std;
 
-constexpr auto ITEMS_TO_ADD = 6;
+constexpr auto ITEMS_TO_CHANGE = 6;
 
-class Adding
+class Changing
 {
 public:
-    Adding(float width, float height, State& state);
+    Changing(float width, float height, State& state);
     void draw(sf::RenderWindow& window);
     void handleEvent(sf::Event& event);
     bool checkIfIsDay(string d);
+    void updateFields(Event ev);
 
 private:
     int selectedInputBox = NULL;
     sf::RectangleShape background;
     vector<sf::Text> addItems;
     vector<sf::RectangleShape> inputBoxes;
+    sf::RectangleShape inputBox;
     vector<sf::Text> inputTexts;
+    sf::Text inputText;
     sf::Font font;
     sf::Text addButton;
     sf::Text backButton;
     State& currentState;
+    sf::Clock clock;
+    sf::Time refreshTime;
 };
 

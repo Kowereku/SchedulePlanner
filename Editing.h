@@ -4,20 +4,20 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "State.h"
 #include "Event.h"
+#include "State.h"
 #include "DBCal.h"
-
-using namespace std;
+#include "Changing.h"
+#include "Global.h"
 
 #define DAYS_IN_WEEK 7
 
-class TimeTable
+class Editing
 {
 public:
-	TimeTable(float width, float height, State& state);
+	Editing(float width, float height, State& state, Changing& changing);
 	void draw(sf::RenderWindow& window);
-	void handleMouseClick(sf::Vector2f mousePos);
+	void handleEventEdit(sf::Vector2f event);
 	void updateEvents(float width, float height);
 	float widthPub;
 	float heightPub;
@@ -27,18 +27,19 @@ private:
 	sf::Font font;
 	sf::Text header;
 	sf::RectangleShape table[7][10];
-	vector<sf::Text> days;
-	vector<Event> display;
-	vector<sf::Text> displayTexts;
+	std::vector<sf::Text> days;
+	std::vector<Event> display;
+	std::vector<sf::Text> displayTexts;
+	std::vector<int> displayIds;
 	sf::Text tableText;
 	sf::Text addButton;
-	sf::Text removeButton;
-	sf::Text editButton;
 	sf::Text backButton;
 	State& currentState;
+	Changing& changingInstance;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 	sf::Clock clock;
 	sf::Time refreshTime;
 };
+
 

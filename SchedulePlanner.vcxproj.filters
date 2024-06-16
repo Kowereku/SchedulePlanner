@@ -30,6 +30,27 @@
     <ClCompile Include="DBCal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Adding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Authors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Delete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Editing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Changing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -45,6 +66,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DBCal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Adding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Authors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Delete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Editing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Changing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

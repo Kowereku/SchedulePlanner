@@ -6,9 +6,10 @@
 #include "TimeTable.h"
 #include "Adding.h"
 #include "Delete.h"
+#include "Editing.h"
+#include "Changing.h"
 #include "sqlite3.h"
 #include "DBCal.h"
-
 
 int main() {
     createDBCal(dir);
@@ -23,6 +24,8 @@ int main() {
     TimeTable timetable(window.getSize().x, window.getSize().y, state);
     Adding adding(window.getSize().x, window.getSize().y, state);
     Delete Delete(window.getSize().x, window.getSize().y, state);
+    Changing changing(window.getSize().x, window.getSize().y, state);
+    Editing editing(window.getSize().x, window.getSize().y, state, changing);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -42,6 +45,10 @@ int main() {
                     adding.handleEvent(event); break;
                 case (State::Delete):
                     Delete.handleEventDel(mousePos); break;
+                case (State::Editing):
+                    editing.handleEventEdit(mousePos); break;
+                case (State::Changing):
+                    changing.handleEvent(event); break;
                 case (State::Authors):
                     Delete.handleEventDel(mousePos); break;
                 }
@@ -53,7 +60,10 @@ int main() {
                 {
                 case State::Adding:
                     adding.handleEvent(event); break;
+                case State::Changing:
+                    changing.handleEvent(event); break;
                 }
+
             }
         }
         window.clear();
@@ -69,6 +79,10 @@ int main() {
             adding.draw(window); break;
         case (State::Delete):
             Delete.draw(window); break;
+        case (State::Editing):
+            editing.draw(window); break;
+        case (State::Changing):
+            changing.draw(window); break;
         }
         window.display();
     }

@@ -67,21 +67,46 @@ void insert(const char* s, string name, string desc, string type, string day, st
 	sqlite3_close(DBCal);
 }
 
-void update(const char* s)
+void update(const char* s, int id, string name, string desc, string type, string day, string starth, string endh)
 {
 	sqlite3* DBCal;
 	char* messageError;
 
 	int exit = sqlite3_open(s, &DBCal);
-
-	string sql("UPDATE calevents SET desc = 'Zebranie' WHERE id = 1");
-
-	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
-	if (exit != SQLITE_OK)
-	{
-		cerr << "Blad w aktualizacji: " << endl;
-		sqlite3_free(messageError);
+	if (exit != SQLITE_OK) {
+		cerr << "Błąd przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+		return;
 	}
+
+	string sql = "UPDATE calevents SET name = ?, desc = ?, type = ?, day = ?, start = ?, end = ? WHERE id = ?";
+
+	sqlite3_stmt* stmt;
+	exit = sqlite3_prepare_v2(DBCal, sql.c_str(), -1, &stmt, nullptr);
+	if (exit != SQLITE_OK) {
+		cerr << "Błąd przy przygotowywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
+		sqlite3_close(DBCal);
+		return;
+	}
+
+	// Bind the parameters
+	sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 2, desc.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 3, type.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 4, day.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 5, starth.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 6, endh.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_int(stmt, 7, id);
+
+	exit = sqlite3_step(stmt);
+	if (exit != SQLITE_DONE) {
+		cerr << "Błąd przy wykonywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
+	}
+	else {
+		cout << "Zaktualizowano pomyślnie" << endl;
+	}
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(DBCal);
 }
 
 void deleteRec(const char* s, int id)
@@ -102,10 +127,10 @@ void deleteRec(const char* s, int id)
 	sqlite3_close(DBCal);
 }
 
-std::vector<Event> select(const char* s)
+vector<Event> select(const char* s)
 {
 	sqlite3* DBCal;
-	std::vector<Event> events;
+	vector<Event> events;
 
 	if (sqlite3_open(s, &DBCal)) {
 		cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << endl;
@@ -135,4 +160,43 @@ std::vector<Event> select(const char* s)
 	sqlite3_close(DBCal);
 
 	return events;
+}
+
+Event select(const char* s, int id)
+{
+	sqlite3* DBCal;
+	string title;
+	string desc;
+	string type;
+	string day;
+	string starth;
+	string endh;
+
+	if (sqlite3_open(s, &DBCal)) {
+		cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+	}
+
+	const char* sql = "SELECT * FROM calevents WHERE id = ?";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(DBCal, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+		cerr << "Nie można wykonać zapytania: " << sqlite3_errmsg(DBCal) << endl;
+	}
+	sqlite3_bind_int(stmt, 1, id);
+
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		desc = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+		type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+		day = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+		starth = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+		endh = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
+
+	}
+	Event event(id, title, desc, type, day, starth, endh);
+	sqlite3_finalize(stmt);
+	sqlite3_close(DBCal);
+	
+
+	return event;
 }
