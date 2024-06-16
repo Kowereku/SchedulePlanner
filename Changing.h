@@ -9,7 +9,6 @@
 #include "State.h"
 #include "Event.h"
 #include "DBCal.h"
-#include "Global.h"
 
 using namespace std;
 

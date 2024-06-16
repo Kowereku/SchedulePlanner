@@ -8,7 +8,6 @@
 #include "State.h"
 #include "DBCal.h"
 #include "Changing.h"
-#include "Global.h"
 
 #define DAYS_IN_WEEK 7
 
