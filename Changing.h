@@ -12,7 +12,7 @@
 
 using namespace std;
 
-constexpr auto ITEMS_TO_CHANGE = 6;
+constexpr auto ITEMS_TO_CHANGE = 5;
 
 class Changing
 {

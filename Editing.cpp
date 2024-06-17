@@ -132,6 +132,8 @@ void Editing::updateEvents(float width, float height)
 {
     display = select(dir);
     displayTexts.clear();
+    displayIds.clear();
+
     int counterPon = 1;
     int counterWt = 1;
     int counterSr = 1;
