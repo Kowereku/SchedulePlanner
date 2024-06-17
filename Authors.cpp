@@ -18,46 +18,42 @@ Authors::Authors(float width, float height, State& state) : currentState(state)
 
     backgroundSprite.setTexture(backgroundTexture);
 
+    sf::Text text;
+    text.setFont(font);
+
+
     header.setFont(font);
-    header.setString("Kalendarz");
+    header.setString("Autorzy");
     header.setCharacterSize(90);
     header.setFillColor(sf::Color(53, 53, 53));
-    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 6));
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 4));
+
+    backButton.setFont(font);
+    backButton.setCharacterSize(50);
+    backButton.setString("Powrot");
+    backButton.setFillColor(sf::Color(63, 63, 63));
+    backButton.setPosition(sf::Vector2f(width / 2 - backButton.getGlobalBounds().width /2, height / (4 + 1) * (0.7 * 3 + 1) + 200));
+
 }
+
 
 void Authors::draw(sf::RenderWindow& window)
 {
     window.draw(backgroundSprite);
     window.draw(header);
-    for (const auto& item : menuItems)
+    window.draw(backButton);
+    for (const auto& txt : displayTexts)
     {
-        window.draw(item);
+        window.draw(txt);
     }
 }
 
 void Authors::handleMouseClick(sf::Vector2f mousePos)
 {
-    for (const auto& item : menuItems)
+    if (backButton.getGlobalBounds().contains(mousePos))
     {
-        if (item.getGlobalBounds().contains(mousePos))
-        {
-            if (item.getString() == "Otworz")
-            {
-                currentState = State::TimeTable;
-            }
-            else if (item.getString() == "Opcje")
-            {
-                cout << "Wcisnieto opcje" << endl;
-            }
-            else if (item.getString() == "Autorzy")
-            {
-                cout << "Wcisnieto autorzy" << endl;
-            }
-            else if (item.getString() == "Wyjdz")
-            {
-                exit(0);
-            }
-        }
+        currentState = State::Menu;
+
     }
 }
 

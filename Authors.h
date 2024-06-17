@@ -16,7 +16,9 @@ public:
 private:
     sf::RectangleShape background;
     std::vector<sf::Text> menuItems;
+    std::vector<sf::Text> displayTexts;
     sf::Text header;
+    sf::Text backButton;
     sf::Font font;
     State& currentState;
     sf::Texture backgroundTexture;

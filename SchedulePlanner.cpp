@@ -50,7 +50,7 @@ int main() {
                 case (State::Changing):
                     changing.handleEvent(event); break;
                 case (State::Authors):
-                    Delete.handleEventDel(mousePos); break;
+                    authors.handleMouseClick(mousePos); break;
                 }
                 
             }

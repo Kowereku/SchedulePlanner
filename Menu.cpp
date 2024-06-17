@@ -17,15 +17,13 @@ Menu::Menu(float width, float height, State& state) : currentState(state) {
     backgroundSprite.setTexture(backgroundTexture);
 
 
-    for (int i = 0; i < MENU_ITEMS; ++i) {
+    for (int i = 1; i < MENU_ITEMS; ++i) {
         sf::Text text;
         text.setFont(font);
         switch (i)
         {
-        case 0:
-            text.setString("Otworz"); break;
         case 1:
-            text.setString("Opcje"); break;
+            text.setString("Otworz"); break;
         case 2:
             text.setString("Autorzy"); break;
         case 3:
@@ -37,14 +35,11 @@ Menu::Menu(float width, float height, State& state) : currentState(state) {
         menuItems.push_back(text);
     }
 
-    //background.setSize(sf::Vector2f(width, height));
-    //background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor tła
-
     header.setFont(font);
     header.setString("Kalendarz");
     header.setCharacterSize(90);
     header.setFillColor(sf::Color(53, 53, 53));
-    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 6));
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 4));
 }
 
 void Menu::draw(sf::RenderWindow& window) 
@@ -66,10 +61,6 @@ void Menu::handleMouseClick(sf::Vector2f mousePos)
             if (item.getString() == "Otworz") 
             {
                 currentState = State::TimeTable;
-            }
-            else if (item.getString() == "Opcje") 
-            {
-                cout << "Wcisnieto opcje" << endl;
             }
             else if (item.getString() == "Autorzy") 
             {
