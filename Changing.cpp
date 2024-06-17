@@ -22,12 +22,10 @@ Changing::Changing(float width, float height, State& state) : currentState(state
         case 1:
             text.setString("Opis"); break;
         case 2:
-            text.setString("Typ"); break;
-        case 3:
             text.setString("Dzien tygodnia"); break;
-        case 4:
+        case 3:
             text.setString("Godzina poczatku (format HH:MM)"); break;
-        case 5:
+        case 4:
             text.setString("Godzina konca (format HH:MM)"); break;
         }
 
@@ -112,10 +110,14 @@ void Changing::handleEvent(sf::Event& event)
             }
             if (addButton.getGlobalBounds().contains(mousePos))
             {
-                string d = inputTexts[3].getString();
+                string d = inputTexts[2].getString();
                 d[0] = toupper(d[0]);
-                string sh = inputTexts[4].getString();
-                string eh = inputTexts[5].getString();
+                for (int k = 1; k < d.size(); k++)
+                {
+                    d[k] = tolower(d[k]);
+                }
+                string sh = inputTexts[3].getString();
+                string eh = inputTexts[4].getString();
 
                 stringstream shTest(sh);
                 string shTemp;
@@ -133,29 +135,27 @@ void Changing::handleEvent(sf::Event& event)
                     ehResult.push_back(stoi(ehTemp));
                 }
 
-                if (regex_match(sh, timeRegexChange) && regex_match(eh, timeRegexChange) && checkIfIsDay(d) && inputTexts[0].getString() != "" && inputTexts[1].getString() != "" && inputTexts[2].getString() != "")
+                if (regex_match(sh, timeRegexChange) && regex_match(eh, timeRegexChange) && checkIfIsDay(d) && inputTexts[0].getString() != "" && inputTexts[1].getString() != "")
                 {
                     if (shResult[0] < ehResult[0])
                     {
-                        update(dir, searchID , inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), d, sh, eh);
+                        update(dir, searchID , inputTexts[0].getString(), inputTexts[1].getString(), d, sh, eh);
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
                         inputTexts[3].setString("");
                         inputTexts[4].setString("");
-                        inputTexts[5].setString("");
                         currentState = State::TimeTable;
                         wrongData.setString("");
                     }
                     else if (shResult[0] == ehResult[0] && shResult[1] < ehResult[1])
                     {
-                        update(dir, searchID, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), d, sh, eh);
+                        update(dir, searchID, inputTexts[0].getString(), inputTexts[1].getString(), d, sh, eh);
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
                         inputTexts[3].setString("");
                         inputTexts[4].setString("");
-                        inputTexts[5].setString("");
                         currentState = State::TimeTable;
                         wrongData.setString("");
                     }
@@ -191,8 +191,7 @@ void Changing::updateFields(Event ev)
 {
     inputTexts[0].setString(ev.name);
     inputTexts[1].setString(ev.desc);
-    inputTexts[2].setString(ev.type);
-    inputTexts[3].setString(ev.day);
-    inputTexts[4].setString(ev.starth);
-    inputTexts[5].setString(ev.endh);
+    inputTexts[2].setString(ev.day);
+    inputTexts[3].setString(ev.starth);
+    inputTexts[4].setString(ev.endh);
 }

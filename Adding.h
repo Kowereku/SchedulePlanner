@@ -11,7 +11,7 @@
 
 using namespace std;
 
-constexpr auto ITEMS_TO_ADD = 6;
+constexpr auto ITEMS_TO_ADD = 5;
 
 class Adding
 {

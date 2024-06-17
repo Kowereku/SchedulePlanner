@@ -20,7 +20,6 @@ void createTable(const char* s)
 		"priority	INTEGER NOT NULL DEFAULT 0,"
 		"name	TEXT NOT NULL,"
 		"desc	TEXT,"
-		"type	TEXT NOT NULL DEFAULT 'NORMAL',"
 		"day	TEXT NOT NULL,"
 		"start	TEXT NOT NULL,"
 		"end	TEXT);";
@@ -49,14 +48,14 @@ void createTable(const char* s)
 	}
 }
 
-void insert(const char* s, string name, string desc, string type, string day, string starth, string endh)
+void insert(const char* s, string name, string desc, string day, string starth, string endh)
 {
 	sqlite3* DBCal;
 	char* messageError;
 
 	int exit = sqlite3_open(s, &DBCal);
 
-	string sql("INSERT INTO calevents (name, desc, type, day, start, end) VALUES ('" + name + "', '" + desc + "', '" + type + "', '" + day + "', '" + starth + "', '" + endh + "');");
+	string sql("INSERT INTO calevents (name, desc, day, start, end) VALUES ('" + name + "', '" + desc + "', '" + day + "', '" + starth + "', '" + endh + "');");
 
 	exit = sqlite3_exec(DBCal, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK)
@@ -67,7 +66,7 @@ void insert(const char* s, string name, string desc, string type, string day, st
 	sqlite3_close(DBCal);
 }
 
-void update(const char* s, int id, string name, string desc, string type, string day, string starth, string endh)
+void update(const char* s, int id, string name, string desc, string day, string starth, string endh)
 {
 	sqlite3* DBCal;
 	char* messageError;
@@ -78,7 +77,7 @@ void update(const char* s, int id, string name, string desc, string type, string
 		return;
 	}
 
-	string sql = "UPDATE calevents SET name = ?, desc = ?, type = ?, day = ?, start = ?, end = ? WHERE id = ?";
+	string sql = "UPDATE calevents SET name = ?, desc = ?, day = ?, start = ?, end = ? WHERE id = ?";
 
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(DBCal, sql.c_str(), -1, &stmt, nullptr);
@@ -91,11 +90,10 @@ void update(const char* s, int id, string name, string desc, string type, string
 	// Bind the parameters
 	sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
 	sqlite3_bind_text(stmt, 2, desc.c_str(), -1, SQLITE_STATIC);
-	sqlite3_bind_text(stmt, 3, type.c_str(), -1, SQLITE_STATIC);
-	sqlite3_bind_text(stmt, 4, day.c_str(), -1, SQLITE_STATIC);
-	sqlite3_bind_text(stmt, 5, starth.c_str(), -1, SQLITE_STATIC);
-	sqlite3_bind_text(stmt, 6, endh.c_str(), -1, SQLITE_STATIC);
-	sqlite3_bind_int(stmt, 7, id);
+	sqlite3_bind_text(stmt, 3, day.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 4, starth.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 5, endh.c_str(), -1, SQLITE_STATIC);
+	sqlite3_bind_int(stmt, 6, id);
 
 	exit = sqlite3_step(stmt);
 	if (exit != SQLITE_DONE) {
@@ -153,11 +151,10 @@ vector<Event> select(const char* s)
 		int id = sqlite3_column_int(stmt, 0);
 		string title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
 		string desc = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-		string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-		string day = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-		string starth = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-		string endh = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
-		events.push_back(Event(id, title, desc, type, day, starth, endh));
+		string day = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+		string starth = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+		string endh = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+		events.push_back(Event(id, title, desc, day, starth, endh));
 	}
 
 	sqlite3_finalize(stmt);
@@ -171,7 +168,6 @@ Event select(const char* s, int id)
 	sqlite3* DBCal;
 	string title;
 	string desc;
-	string type;
 	string day;
 	string starth;
 	string endh;
@@ -191,13 +187,12 @@ Event select(const char* s, int id)
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
 		title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
 		desc = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-		type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-		day = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-		starth = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-		endh = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
+		day = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+		starth = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+		endh = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
 
 	}
-	Event event(id, title, desc, type, day, starth, endh);
+	Event event(id, title, desc, day, starth, endh);
 	sqlite3_finalize(stmt);
 	sqlite3_close(DBCal);
 	
