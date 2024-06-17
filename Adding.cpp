@@ -24,19 +24,20 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
         case 2:
             text.setString("Dzien tygodnia"); break;
         case 3:
-            text.setString("Godzina poczatku (format HH:MM)"); break;
+            text.setString("Godzina poczatku \n(format HH:MM)"); break;
         case 4:
-            text.setString("Godzina konca (format HH:MM)"); break;
+            text.setString("Godzina konca \n(format HH:MM)"); break;
         }
 
+        text.setCharacterSize(30);
         text.setFillColor(sf::Color::White);
-        text.setPosition(sf::Vector2f(width / 10 - text.getGlobalBounds().width / 10, height / (ITEMS_TO_ADD) * i));
+        text.setPosition(sf::Vector2f(width / 5 - text.getGlobalBounds().width / 10, height / (ITEMS_TO_ADD) * (0.7*i) + 200));
         addItems.push_back(text);
 
         sf::RectangleShape inputBox;
-        inputBox.setSize(sf::Vector2f(width / 2, 50));
+        inputBox.setSize(sf::Vector2f(width / 4, 50));
         inputBox.setFillColor(sf::Color::White);
-        inputBox.setPosition(sf::Vector2f(width / 2 - inputBox.getSize().x / 2, height / (ITEMS_TO_ADD * 2) * (i * 2 + 1)));
+        inputBox.setPosition(sf::Vector2f(width /2 - inputBox.getSize().x / 2, height / (ITEMS_TO_ADD) * (0.7 * i) + 200));
         inputBoxes.push_back(inputBox);
 
         sf::Text inputText;
@@ -46,32 +47,46 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
         inputTexts.push_back(inputText);
     }
 
+    header.setFont(font);
+    header.setString("Dodawanie wydarzen");
+    header.setCharacterSize(90);
+    header.setFillColor(sf::Color::White);
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height/27));
+
     addButton.setFont(font);
+    addButton.setCharacterSize(40);
     addButton.setString("Dodaj");
     addButton.setFillColor(sf::Color::White);
-    addButton.setPosition(sf::Vector2f(width - 100, height / 3));
+    addButton.setPosition(sf::Vector2f(width - 400, height / 3));
 
     backButton.setFont(font);
+    backButton.setCharacterSize(40);
     backButton.setString("Powrot");
     backButton.setFillColor(sf::Color::White);
-    backButton.setPosition(sf::Vector2f(width - 100, (height / 3) * 2));
+    backButton.setPosition(sf::Vector2f(width - 400, (height / 3) * 2));
 
     wrongData.setFont(font);
     wrongData.setFillColor(sf::Color::Red);
-    wrongData.setPosition(sf::Vector2f(width - 600, height / 2));
+    wrongData.setCharacterSize(30);
+    wrongData.setPosition(sf::Vector2f(width / 2.8 - wrongData.getGlobalBounds().width / 2, height - 100));
 }
 
-void Adding::draw(sf::RenderWindow& window) {
+void Adding::draw(sf::RenderWindow& window) 
+{
     window.draw(background);
-    for (const auto& item : addItems) {
+    for (const auto& item : addItems) 
+    {
         window.draw(item);
     }
-    for (const auto& inputBox : inputBoxes) {
+    for (const auto& inputBox : inputBoxes) 
+    {
         window.draw(inputBox);
     }
-    for (const auto& inputText : inputTexts) {
+    for (const auto& inputText : inputTexts) 
+    {
         window.draw(inputText);
     }
+    window.draw(header);
     window.draw(addButton);
     window.draw(backButton);
     window.draw(wrongData);

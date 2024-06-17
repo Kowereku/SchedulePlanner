@@ -30,6 +30,7 @@ private:
     sf::Font font;
     sf::Text addButton;
     sf::Text backButton;
+    sf::Text header;
     sf::Text wrongData;
     State& currentState;
 };

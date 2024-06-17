@@ -34,6 +34,7 @@ private:
     sf::Text inputText;
     sf::Font font;
     sf::Text addButton;
+    sf::Text header;
     sf::Text backButton;
     sf::Text wrongData;
     State& currentState;
