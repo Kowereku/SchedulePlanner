@@ -24,10 +24,13 @@ public:
 private:
     int selectedInputBox = NULL;
     sf::RectangleShape background;
+    sf::Sprite backgroundSprite;
+    sf::Texture backgroundTexture;
     vector<sf::Text> addItems;
     vector<sf::RectangleShape> inputBoxes;
     vector<sf::Text> inputTexts;
     sf::Font font;
+    sf::Font font_input;
     sf::Text addButton;
     sf::Text backButton;
     sf::Text header;

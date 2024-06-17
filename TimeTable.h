@@ -25,6 +25,7 @@ public:
 private:
 	sf::RectangleShape background;
 	sf::Font font;
+	sf::Font fontTypewriter;
 	sf::Text header;
 	sf::RectangleShape table[7][10];
 	vector<sf::Text> days;

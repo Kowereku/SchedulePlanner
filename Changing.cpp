@@ -5,16 +5,26 @@ regex timeRegexChange(R"((0?\d|1\d|2[0-3]):([0-5]?\d))");
 
 Changing::Changing(float width, float height, State& state) : currentState(state)
 {
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("charlotte.ttf")) {
         // obs�uga wyj�tku
     }
 
-    background.setSize(sf::Vector2f(width, height));
-    background.setFillColor(sf::Color(63, 63, 63)); // Szary kolor t�a
+    if (!font_input.loadFromFile("Typewriter.ttf"))
+    {
+        // obs�uga wyj�tku
+    }
+
+    if (!backgroundTexture.loadFromFile("background_add_edit.jpg"))
+    {
+        // obsługa wyjątku
+        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+    }
+
+    backgroundSprite.setTexture(backgroundTexture);
 
     for (int i = 0; i < ITEMS_TO_CHANGE; ++i) {
         sf::Text text;
-        text.setFont(font);
+        text.setFont(font_input);
         switch (i)
         {
         case 0:
@@ -30,16 +40,16 @@ Changing::Changing(float width, float height, State& state) : currentState(state
         }
 
         text.setCharacterSize(30);
-        text.setFillColor(sf::Color::White);
+        text.setFillColor(sf::Color(63, 63, 63));
         text.setPosition(sf::Vector2f(width / 5 - text.getGlobalBounds().width / 10, height / (ITEMS_TO_CHANGE) * (0.7 * i) + 200));
         addItems.push_back(text);
 
         inputBox.setSize(sf::Vector2f(width / 4, 50));
-        inputBox.setFillColor(sf::Color::White);
+        inputBox.setFillColor(sf::Color(235, 213, 196));
         inputBox.setPosition(sf::Vector2f(width / 2 - inputBox.getSize().x / 2, height / (ITEMS_TO_CHANGE) * (0.7 * i) + 200));
         inputBoxes.push_back(inputBox);
 
-        inputText.setFont(font);
+        inputText.setFont(font_input);
         inputText.setFillColor(sf::Color::Black);
         inputText.setPosition(inputBox.getPosition().x + 5, inputBox.getPosition().y + 5);
         inputTexts.push_back(inputText);
@@ -48,22 +58,22 @@ Changing::Changing(float width, float height, State& state) : currentState(state
     header.setFont(font);
     header.setString("Edytowanie wydarzen");
     header.setCharacterSize(90);
-    header.setFillColor(sf::Color::White);
+    header.setFillColor(sf::Color(53, 53, 53));
     header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 27));
 
     addButton.setFont(font);
     addButton.setCharacterSize(40);
     addButton.setString("Zmien");
-    addButton.setFillColor(sf::Color::White);
+    addButton.setFillColor(sf::Color(63, 63, 63));
     addButton.setPosition(sf::Vector2f(width - 400, height / 3));
 
     backButton.setFont(font);
     backButton.setCharacterSize(40);
     backButton.setString("Powrot");
-    backButton.setFillColor(sf::Color::White);
+    backButton.setFillColor(sf::Color(63, 63, 63));
     backButton.setPosition(sf::Vector2f(width - 400, (height / 3) * 2));
 
-    wrongData.setFont(font);
+    wrongData.setFont(font_input);
     wrongData.setFillColor(sf::Color::Red);
     wrongData.setCharacterSize(30);
     wrongData.setPosition(sf::Vector2f(width / 2.8 - wrongData.getGlobalBounds().width / 2, height - 100));
@@ -71,7 +81,7 @@ Changing::Changing(float width, float height, State& state) : currentState(state
 
 void Changing::draw(sf::RenderWindow& window) {
 
-    window.draw(background);
+    window.draw(backgroundSprite);
     for (const auto& item : addItems) {
         window.draw(item);
     }

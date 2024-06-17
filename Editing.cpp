@@ -6,6 +6,11 @@ Editing::Editing(float width, float height, State& state, Changing& changing) : 
         // obs�uga wyj�ku
     }
 
+    if (!fontTypewriter.loadFromFile("Typewriter.ttf"))
+    {
+        // obs�uga wyj�tku
+    }
+
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
         // obs�uga wyj�tku
@@ -144,8 +149,8 @@ void Editing::updateEvents(float width, float height)
     for (const auto& event : display)
     {
         sf::Text text;
-        text.setFont(font);
-        text.setCharacterSize(18);
+        text.setFont(fontTypewriter);
+        text.setCharacterSize(16);
         text.setFillColor(sf::Color::Black);
 
         std::string eventDetails = event.name + "\n" +
