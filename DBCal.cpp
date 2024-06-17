@@ -74,7 +74,7 @@ void update(const char* s, int id, string name, string desc, string type, string
 
 	int exit = sqlite3_open(s, &DBCal);
 	if (exit != SQLITE_OK) {
-		cerr << "Błąd przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Blad przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
 		return;
 	}
 
@@ -83,7 +83,7 @@ void update(const char* s, int id, string name, string desc, string type, string
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(DBCal, sql.c_str(), -1, &stmt, nullptr);
 	if (exit != SQLITE_OK) {
-		cerr << "Błąd przy przygotowywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Blad przy przygotowywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
 		sqlite3_close(DBCal);
 		return;
 	}
@@ -99,10 +99,10 @@ void update(const char* s, int id, string name, string desc, string type, string
 
 	exit = sqlite3_step(stmt);
 	if (exit != SQLITE_DONE) {
-		cerr << "Błąd przy wykonywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Blad przy wykonywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
 	}
 	else {
-		cout << "Zaktualizowano pomyślnie" << endl;
+		cout << "Zaktualizowano pomyslnie" << endl;
 	}
 
 	sqlite3_finalize(stmt);
@@ -114,6 +114,10 @@ void deleteRec(const char* s, int id)
 	sqlite3* DBCal;
 
 	int exit = sqlite3_open(s, &DBCal);
+	if (exit != SQLITE_OK) {
+		cerr << "Blad przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+		return;
+	}
 
 	string sql = "DELETE FROM calevents WHERE id = ?";
 	sqlite3_stmt* stmt;
@@ -133,15 +137,15 @@ vector<Event> select(const char* s)
 	vector<Event> events;
 
 	if (sqlite3_open(s, &DBCal)) {
-		cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Nie mozna otworzyc bazy danych: " << sqlite3_errmsg(DBCal) << endl;
 		return events;
 	}
 
-	const char* sql = "SELECT * FROM calevents";
+	const char* sql = "SELECT * FROM calevents ORDER BY start ASC";
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(DBCal, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-		cerr << "Nie można wykonać zapytania: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Nie mozna wykonac zapytania: " << sqlite3_errmsg(DBCal) << endl;
 		return events;
 	}
 
@@ -173,14 +177,14 @@ Event select(const char* s, int id)
 	string endh;
 
 	if (sqlite3_open(s, &DBCal)) {
-		cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Nie mozna otworzyc bazy danych: " << sqlite3_errmsg(DBCal) << endl;
 	}
 
 	const char* sql = "SELECT * FROM calevents WHERE id = ?";
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(DBCal, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-		cerr << "Nie można wykonać zapytania: " << sqlite3_errmsg(DBCal) << endl;
+		cerr << "Nie mozna wykonac zapytania: " << sqlite3_errmsg(DBCal) << endl;
 	}
 	sqlite3_bind_int(stmt, 1, id);
 

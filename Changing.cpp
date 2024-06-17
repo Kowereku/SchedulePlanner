@@ -26,9 +26,9 @@ Changing::Changing(float width, float height, State& state) : currentState(state
         case 3:
             text.setString("Dzien tygodnia"); break;
         case 4:
-            text.setString("Godzina pocz."); break;
+            text.setString("Godzina poczatku (format HH:MM)"); break;
         case 5:
-            text.setString("Godzina kon."); break;
+            text.setString("Godzina konca (format HH:MM)"); break;
         }
 
         text.setFillColor(sf::Color::White);
@@ -55,6 +55,10 @@ Changing::Changing(float width, float height, State& state) : currentState(state
     backButton.setString("Powrot");
     backButton.setFillColor(sf::Color::White);
     backButton.setPosition(sf::Vector2f(width - 100, (height / 3) * 2));
+
+    wrongData.setFont(font);
+    wrongData.setFillColor(sf::Color::Red);
+    wrongData.setPosition(sf::Vector2f(width - 600, height / 2));
 }
 
 void Changing::draw(sf::RenderWindow& window) {
@@ -71,6 +75,7 @@ void Changing::draw(sf::RenderWindow& window) {
     }
     window.draw(addButton);
     window.draw(backButton);
+    window.draw(wrongData);
 }
 
 void Changing::handleEvent(sf::Event& event)
@@ -108,6 +113,7 @@ void Changing::handleEvent(sf::Event& event)
             if (addButton.getGlobalBounds().contains(mousePos))
             {
                 string d = inputTexts[3].getString();
+                d[0] = toupper(d[0]);
                 string sh = inputTexts[4].getString();
                 string eh = inputTexts[5].getString();
 
@@ -131,7 +137,7 @@ void Changing::handleEvent(sf::Event& event)
                 {
                     if (shResult[0] < ehResult[0])
                     {
-                        update(dir, searchID , inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        update(dir, searchID , inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), d, sh, eh);
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
@@ -139,10 +145,11 @@ void Changing::handleEvent(sf::Event& event)
                         inputTexts[4].setString("");
                         inputTexts[5].setString("");
                         currentState = State::TimeTable;
+                        wrongData.setString("");
                     }
-                    else if (shResult[0] = ehResult[0] & shResult[1] < ehResult[1])
+                    else if (shResult[0] == ehResult[0] && shResult[1] < ehResult[1])
                     {
-                        update(dir, searchID, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), inputTexts[3].getString(), inputTexts[4].getString(), inputTexts[5].getString());
+                        update(dir, searchID, inputTexts[0].getString(), inputTexts[1].getString(), inputTexts[2].getString(), d, sh, eh);
                         inputTexts[0].setString("");
                         inputTexts[1].setString("");
                         inputTexts[2].setString("");
@@ -150,7 +157,16 @@ void Changing::handleEvent(sf::Event& event)
                         inputTexts[4].setString("");
                         inputTexts[5].setString("");
                         currentState = State::TimeTable;
+                        wrongData.setString("");
                     }
+                    else
+                    {
+                        wrongData.setString("Wprowadzono niepoprawne dane!");
+                    }
+                }
+                else
+                {
+                    wrongData.setString("Wprowadzono niepoprawne dane!");
                 }
             }
             else if (backButton.getGlobalBounds().contains(mousePos))

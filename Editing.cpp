@@ -150,37 +150,37 @@ void Editing::updateEvents(float width, float height)
             event.desc + "\n" +
             event.starth + " - " + event.endh;
 
-        if (event.day == "Poniedzialek")
+        if (event.day == "Poniedzialek" && counterPon <= 9)
         {
             text.setPosition(sf::Vector2f((0.5) * width / 8 + 10, counterPon * height / 15 + 98));
             counterPon++;
         }
-        else if (event.day == "Wtorek")
+        else if (event.day == "Wtorek" && counterWt <= 9)
         {
             text.setPosition(sf::Vector2f((1.5) * width / 8 + 10, counterWt * height / 15 + 98));
             counterWt++;
         }
-        else if (event.day == "Sroda")
+        else if (event.day == "Sroda" && counterSr <= 9)
         {
             text.setPosition(sf::Vector2f((2.5) * width / 8 + 10, counterSr * height / 15 + 98));
             counterSr++;
         }
-        else if (event.day == "Czwartek")
+        else if (event.day == "Czwartek" && counterCzw <= 9)
         {
             text.setPosition(sf::Vector2f((3.5) * width / 8 + 10, counterCzw * height / 15 + 98));
             counterCzw++;
         }
-        else if (event.day == "Piatek")
+        else if (event.day == "Piatek" && counterPt <= 9)
         {
             text.setPosition(sf::Vector2f((4.5) * width / 8 + 10, counterPt * height / 15 + 98));
             counterPt++;
         }
-        else if (event.day == "Sobota")
+        else if (event.day == "Sobota" && counterSob <= 9)
         {
             text.setPosition(sf::Vector2f((5.5) * width / 8 + 10, counterSob * height / 15 + 98));
             counterSob++;
         }
-        else if (event.day == "Niedziela")
+        else if (event.day == "Niedziela" && counterNd <= 9)
         {
             text.setPosition(sf::Vector2f((6.5) * width / 8 + 10, counterNd * height / 15 + 100));
             counterNd++;
