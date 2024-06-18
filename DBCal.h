@@ -7,7 +7,7 @@
 
 using namespace std;
 
-static const char* dir = ".\SchedulePlanner\DataBaseCalendar.db";
+static const char* dir = ".\SchedulePlanner\DataBaseCalendar.db"; // lokalizacja pliku bazy danych
 
 void createDBCal(const char* s);
 void createTable(const char* s);

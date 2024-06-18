@@ -11,15 +11,15 @@
 #include "sqlite3.h"
 #include "DBCal.h"
 
-int main() {
+int main() { // glowna funkcja 
     createDBCal(dir);
     createTable(dir);
         
-    sf::RenderWindow window(sf::VideoMode(1600, 900), "Main Menu", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Main Menu", sf::Style::Close); // wyswietlanie okna
 
     State state = State::Menu;
 
-    Menu menu(window.getSize().x, window.getSize().y, state);
+    Menu menu(window.getSize().x, window.getSize().y, state); // tworzenie instancji kazdej strony
     Authors authors(window.getSize().x, window.getSize().y, state);
     TimeTable timetable(window.getSize().x, window.getSize().y, state);
     Adding adding(window.getSize().x, window.getSize().y, state);
@@ -27,7 +27,7 @@ int main() {
     Changing changing(window.getSize().x, window.getSize().y, state);
     Editing editing(window.getSize().x, window.getSize().y, state, changing);
 
-    while (window.isOpen()) {
+    while (window.isOpen()) { // wyswietlanie okien i obsluga klikniec na okno aplikacji
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {

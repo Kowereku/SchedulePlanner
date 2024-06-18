@@ -1,20 +1,19 @@
 #include "TimeTable.h"
 
-TimeTable::TimeTable(float width, float height, State& state) : currentState(state)
+TimeTable::TimeTable(float width, float height, State& state) : currentState(state) // konstruktor planu wydarzen
 {
-    if (!font.loadFromFile("Calligraphy.ttf")) {
-        // obsługa wyjąku
+    if (!font.loadFromFile("Calligraphy.ttf")) { // ladowanie czcionek i tla
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!fontTypewriter.loadFromFile("Typewriter.ttf"))
     {
-        // obs�uga wyj�tku
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
-        // obsługa wyjątku
-        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+        std::cerr << "Nie mozna zaladowac obrazka tla" << std::endl;
     }
 
     widthPub = width;
@@ -27,7 +26,7 @@ TimeTable::TimeTable(float width, float height, State& state) : currentState(sta
     backgroundSprite.setTexture(backgroundTexture);
 
     header.setFont(font);
-    header.setString("Plan Tygodnia");
+    header.setString("Planner Tygodnia");
     header.setCharacterSize(70);
     header.setFillColor(sf::Color::Black);
     header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 40 - 30 ));

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Event
+class Event // klasa wyswietlajaca wydarzenia
 {
 public:
 	Event(int id, string n, string d, string day, string sh, string eh);

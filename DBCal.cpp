@@ -1,7 +1,7 @@
 #include "DBCal.h"
 
 
-void createDBCal(const char* s)
+void createDBCal(const char* s) // tworzenie bazy danych
 {
 	sqlite3* DBCal;
 	int exit = 0;
@@ -10,7 +10,7 @@ void createDBCal(const char* s)
 
 	sqlite3_close(DBCal);
 }
-void createTable(const char* s)
+void createTable(const char* s) // tworzenie tabeli
 {
 	sqlite3* DBCal;
 
@@ -35,7 +35,7 @@ void createTable(const char* s)
 
 		if (exit != SQLITE_OK)
 		{
-			cerr << "Nie dziala baza danych" << endl;
+			cerr << "Blad przy tworzeniu bazy danych" << endl;
 			sqlite3_free(messaggeError);
 		}
 		else
@@ -48,12 +48,16 @@ void createTable(const char* s)
 	}
 }
 
-void insert(const char* s, string name, string desc, string day, string starth, string endh)
+void insert(const char* s, string name, string desc, string day, string starth, string endh) // dodawanie rekordu
 {
 	sqlite3* DBCal;
 	char* messageError;
 
 	int exit = sqlite3_open(s, &DBCal);
+	if (exit != SQLITE_OK)
+	{
+		cerr << "Blad przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
+	}
 
 	string sql("INSERT INTO calevents (name, desc, day, start, end) VALUES ('" + name + "', '" + desc + "', '" + day + "', '" + starth + "', '" + endh + "');");
 
@@ -66,15 +70,13 @@ void insert(const char* s, string name, string desc, string day, string starth, 
 	sqlite3_close(DBCal);
 }
 
-void update(const char* s, int id, string name, string desc, string day, string starth, string endh)
+void update(const char* s, int id, string name, string desc, string day, string starth, string endh) // aktualizowanie rekordu
 {
 	sqlite3* DBCal;
-	char* messageError;
 
 	int exit = sqlite3_open(s, &DBCal);
 	if (exit != SQLITE_OK) {
 		cerr << "Blad przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
-		return;
 	}
 
 	string sql = "UPDATE calevents SET name = ?, desc = ?, day = ?, start = ?, end = ? WHERE id = ?";
@@ -84,10 +86,8 @@ void update(const char* s, int id, string name, string desc, string day, string 
 	if (exit != SQLITE_OK) {
 		cerr << "Blad przy przygotowywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
 		sqlite3_close(DBCal);
-		return;
 	}
 
-	// Bind the parameters
 	sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
 	sqlite3_bind_text(stmt, 2, desc.c_str(), -1, SQLITE_STATIC);
 	sqlite3_bind_text(stmt, 3, day.c_str(), -1, SQLITE_STATIC);
@@ -107,14 +107,13 @@ void update(const char* s, int id, string name, string desc, string day, string 
 	sqlite3_close(DBCal);
 }
 
-void deleteRec(const char* s, int id)
+void deleteRec(const char* s, int id) // usuwanie rekordu
 {
 	sqlite3* DBCal;
 
 	int exit = sqlite3_open(s, &DBCal);
 	if (exit != SQLITE_OK) {
 		cerr << "Blad przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
-		return;
 	}
 
 	string sql = "DELETE FROM calevents WHERE id = ?";
@@ -129,22 +128,20 @@ void deleteRec(const char* s, int id)
 	sqlite3_close(DBCal);
 }
 
-vector<Event> select(const char* s)
+vector<Event> select(const char* s) // wybieranie wszystkich rekordow
 {
 	sqlite3* DBCal;
 	vector<Event> events;
 
 	if (sqlite3_open(s, &DBCal)) {
-		cerr << "Nie mozna otworzyc bazy danych: " << sqlite3_errmsg(DBCal) << endl;
-		return events;
+		cerr << "Blad przy otwieraniu bazy danych: " << sqlite3_errmsg(DBCal) << endl;
 	}
 
 	const char* sql = "SELECT * FROM calevents ORDER BY start ASC";
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(DBCal, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-		cerr << "Nie mozna wykonac zapytania: " << sqlite3_errmsg(DBCal) << endl;
-		return events;
+		cerr << "Blad przy wykonywaniu zapytania: " << sqlite3_errmsg(DBCal) << endl;
 	}
 
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -163,7 +160,7 @@ vector<Event> select(const char* s)
 	return events;
 }
 
-Event select(const char* s, int id)
+Event select(const char* s, int id) // wybieranie pojedynczego rekordu
 {
 	sqlite3* DBCal;
 	string title;

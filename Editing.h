@@ -9,7 +9,7 @@
 #include "DBCal.h"
 #include "Changing.h"
 
-#define DAYS_IN_WEEK 7
+#define DAYS_IN_WEEK 7 // stala dni w tygodniu
 
 class Editing
 {
@@ -22,7 +22,6 @@ public:
 	float heightPub;
 
 private:
-	sf::RectangleShape background;
 	sf::Font font;
 	sf::Font fontTypewriter;
 	sf::Text header;

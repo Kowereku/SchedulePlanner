@@ -1,28 +1,27 @@
 #include "Changing.h"
 #include <iostream>
 
-regex timeRegexChange(R"((0?\d|1\d|2[0-3]):([0-5]?\d))");
+regex timeRegexChange(R"((0?\d|1\d|2[0-3]):([0-5]?\d))"); // regex czasu
 
-Changing::Changing(float width, float height, State& state) : currentState(state)
+Changing::Changing(float width, float height, State& state) : currentState(state) // konstruktor okna do edycji rekordu
 {
-    if (!font.loadFromFile("charlotte.ttf")) {
-        // obs�uga wyj�tku
+    if (!font.loadFromFile("charlotte.ttf")) { // sprawdzenie czcionki i tla
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!font_input.loadFromFile("Typewriter.ttf"))
     {
-        // obs�uga wyj�tku
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("background_add_edit.jpg"))
     {
-        // obsługa wyjątku
-        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+        std::cerr << "Nie mozna zaladowac obrazka tla" << std::endl;
     }
 
     backgroundSprite.setTexture(backgroundTexture);
 
-    for (int i = 0; i < ITEMS_TO_CHANGE; ++i) {
+    for (int i = 0; i < ITEMS_TO_CHANGE; ++i) { // rysowanie pol edycji
         sf::Text text;
         text.setFont(font_input);
         switch (i)
@@ -59,7 +58,7 @@ Changing::Changing(float width, float height, State& state) : currentState(state
     header.setString("Edytowanie wydarzen");
     header.setCharacterSize(90);
     header.setFillColor(sf::Color(53, 53, 53));
-    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 27));
+    header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 27)); // rysowanie naglowka i guzikow
 
     addButton.setFont(font);
     addButton.setCharacterSize(40);
@@ -79,7 +78,7 @@ Changing::Changing(float width, float height, State& state) : currentState(state
     wrongData.setPosition(sf::Vector2f(width / 2.8 - wrongData.getGlobalBounds().width / 2, height - 100));
 }
 
-void Changing::draw(sf::RenderWindow& window) {
+void Changing::draw(sf::RenderWindow& window) { // rysowanie okna
 
     window.draw(backgroundSprite);
     for (const auto& item : addItems) {
@@ -97,7 +96,7 @@ void Changing::draw(sf::RenderWindow& window) {
     window.draw(wrongData);
 }
 
-void Changing::handleEvent(sf::Event& event)
+void Changing::handleEvent(sf::Event& event) // obsluga myszy i klawiatury, dodawanie do bazy danych
 {
     if (event.type == sf::Event::TextEntered)
     {
@@ -105,7 +104,7 @@ void Changing::handleEvent(sf::Event& event)
         {
             if (selectedInputBox >= 0 && selectedInputBox < inputTexts.size()) {
                 std::string currentString = inputTexts[selectedInputBox].getString();
-                if (event.text.unicode == '\b') // Obsluga klawisza backspace
+                if (event.text.unicode == '\b')
                 {
                     if (!currentString.empty())
                     {
@@ -193,12 +192,13 @@ void Changing::handleEvent(sf::Event& event)
             else if (backButton.getGlobalBounds().contains(mousePos))
             {
                 currentState = State::Editing;
+                wrongData.setString("");
             }
         }
     }
 }
 
-bool Changing::checkIfIsDay(string d)
+bool Changing::checkIfIsDay(string d) // sprawdzenie czy poprawny dzien
 {
     if (d == "Poniedzialek" || d == "Wtorek" || d == "Sroda" || d == "Czwartek" || d == "Piatek" || d == "Sobota" || d == "Niedziela")
     {
@@ -208,7 +208,7 @@ bool Changing::checkIfIsDay(string d)
         return false;
 }
 
-void Changing::updateFields(Event ev)
+void Changing::updateFields(Event ev) // aktualizacja pol na podstawie rekordu
 {
     inputTexts[0].setString(ev.name);
     inputTexts[1].setString(ev.desc);

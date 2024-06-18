@@ -11,7 +11,7 @@
 
 using namespace std;
 
-constexpr auto ITEMS_TO_ADD = 5;
+constexpr auto ITEMS_TO_ADD = 5; // stala liczba elementow do wyswietlenia
 
 class Adding
 {
@@ -23,7 +23,6 @@ public:
 
 private:
     int selectedInputBox = NULL;
-    sf::RectangleShape background;
     sf::Sprite backgroundSprite;
     sf::Texture backgroundTexture;
     vector<sf::Text> addItems;

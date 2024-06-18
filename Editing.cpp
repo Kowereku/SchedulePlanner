@@ -1,20 +1,19 @@
 #include "Editing.h"
 
-Editing::Editing(float width, float height, State& state, Changing& changing) : currentState(state), changingInstance(changing)
+Editing::Editing(float width, float height, State& state, Changing& changing) : currentState(state), changingInstance(changing) // konstruktor okna do wyboru do edycji
 {
-    if (!font.loadFromFile("Calligraphy.ttf")) {
-        // obs�uga wyj�ku
+    if (!font.loadFromFile("Calligraphy.ttf")) { // ladowanie czcionek i tla
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!fontTypewriter.loadFromFile("Typewriter.ttf"))
     {
-        // obs�uga wyj�tku
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
-        // obs�uga wyj�tku
-        std::cerr << "Nie mo�na za�adowa� obrazka t�a" << std::endl;
+        std::cerr << "Nie mozna zaladowac obrazka tla" << std::endl;
     }
 
     widthPub = width;
@@ -27,13 +26,13 @@ Editing::Editing(float width, float height, State& state, Changing& changing) : 
     backgroundSprite.setTexture(backgroundTexture);
 
 
-    header.setFont(font);
-    header.setString("Plan Tygodnia");
+    header.setFont(font); // header
+    header.setString("Wybierz wydarzenie do edycji");
     header.setCharacterSize(70);
     header.setFillColor(sf::Color::Black);
     header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 40 - 30));
 
-    float cellWidth = width / 8;
+    float cellWidth = width / 8; // wyswietlanie tablicy
     float cellHeight = height / 15;
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 10; ++j) {
@@ -74,14 +73,14 @@ Editing::Editing(float width, float height, State& state, Changing& changing) : 
         days.push_back(text);
     }
 
-    backButton.setFont(font);
+    backButton.setFont(font); // guzik powrot
     backButton.setCharacterSize(50);
     backButton.setString("Powrot");
     backButton.setFillColor(sf::Color::Black);
     backButton.setPosition(sf::Vector2f(width / 2 - backButton.getGlobalBounds().width / 2, height - 100));
 }
 
-void Editing::draw(sf::RenderWindow& window)
+void Editing::draw(sf::RenderWindow& window) // rysowanie okienka
 {
     if (clock.getElapsedTime() > refreshTime)
     {
@@ -108,7 +107,7 @@ void Editing::draw(sf::RenderWindow& window)
     }
 }
 
-void Editing::handleEventEdit(sf::Vector2f event)
+void Editing::handleEventEdit(sf::Vector2f event) // obsluga myszki
 {
     if (backButton.getGlobalBounds().contains(event))
     {
@@ -133,7 +132,7 @@ void Editing::handleEventEdit(sf::Vector2f event)
     }
 }
 
-void Editing::updateEvents(float width, float height)
+void Editing::updateEvents(float width, float height) // aktualizacja wydarzen
 {
     display = select(dir);
     displayTexts.clear();

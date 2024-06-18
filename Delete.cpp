@@ -1,20 +1,19 @@
 #include "Delete.h"
 
-Delete::Delete(float width, float height, State& state) : currentState(state)
+Delete::Delete(float width, float height, State& state) : currentState(state) // konstruktor okna do usuwania rekordow
 {
-    if (!font.loadFromFile("Calligraphy.ttf")) {
-        // obs�uga wyj�ku
+    if (!font.loadFromFile("Calligraphy.ttf")) { // ladowanie czcionek i tla
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!fontTypewriter.loadFromFile("Typewriter.ttf"))
     {
-        // obs�uga wyj�tku
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))
     {
-        // obs�uga wyj�tku
-        std::cerr << "Nie mo�na za�adowa� obrazka t�a" << std::endl;
+        std::cerr << "Nie mozna zaladowac obrazka tla" << std::endl;
     }
 
     widthPub = width;
@@ -27,15 +26,15 @@ Delete::Delete(float width, float height, State& state) : currentState(state)
     backgroundSprite.setTexture(backgroundTexture);
 
 
-    header.setFont(font);
-    header.setString("Plan Tygodnia");
+    header.setFont(font); // rysowanie naglowka
+    header.setString("Wybierz wydarzenie do usuniecia");
     header.setCharacterSize(70);
     header.setFillColor(sf::Color::Black);
     header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 40 - 30));
 
     float cellWidth = width / 8;
     float cellHeight = height / 15;
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < 7; ++i) { // rysowanie calej tabeli
         for (int j = 0; j < 10; ++j) {
             table[i][j].setSize(sf::Vector2f(cellWidth, cellHeight));
             table[i][j].setOutlineColor(sf::Color::Black);
@@ -74,14 +73,14 @@ Delete::Delete(float width, float height, State& state) : currentState(state)
         days.push_back(text);
     }
 
-    backButton.setFont(font);
+    backButton.setFont(font); // guzik powrot
     backButton.setCharacterSize(50);
     backButton.setString("Powrot");
     backButton.setFillColor(sf::Color::Black);
     backButton.setPosition(sf::Vector2f(width / 2 - backButton.getGlobalBounds().width / 2, height - 100));
 }
 
-void Delete::draw(sf::RenderWindow& window)
+void Delete::draw(sf::RenderWindow& window) // wyswietlanie rzeczy w oknie
 {
     if (clock.getElapsedTime() > refreshTime)
     {
@@ -108,7 +107,7 @@ void Delete::draw(sf::RenderWindow& window)
     }
 }
 
-void Delete::handleEventDel(sf::Vector2f event)
+void Delete::handleEventDel(sf::Vector2f event) // obsluga myszki
 {
     if (backButton.getGlobalBounds().contains(event))
     {

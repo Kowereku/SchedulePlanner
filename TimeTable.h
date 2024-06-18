@@ -23,7 +23,6 @@ public:
 	float heightPub;
 
 private:
-	sf::RectangleShape background;
 	sf::Font font;
 	sf::Font fontTypewriter;
 	sf::Text header;

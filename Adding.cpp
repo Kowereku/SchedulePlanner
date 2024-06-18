@@ -1,29 +1,28 @@
 #include "Adding.h"
 #include <iostream>
 
-regex timeRegexAdd(R"((0?\d|1\d|2[0-3]):([0-5]?\d))");
+regex timeRegexAdd(R"((0?\d|1\d|2[0-3]):([0-5]?\d))"); // regex czasu
 
-Adding::Adding(float width, float height, State& state) : currentState(state)
+Adding::Adding(float width, float height, State& state) : currentState(state) // konstruktor okna dodawania do bazy danych
 {
-    if (!font.loadFromFile("charlotte.ttf")) 
+    if (!font.loadFromFile("charlotte.ttf")) // sprawdzanie, czy zaladowano czcionki i tlo
     {
-        // obs�uga wyj�tku
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!font_input.loadFromFile("Typewriter.ttf"))
     {
-        // obs�uga wyj�tku
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
     
     if (!backgroundTexture.loadFromFile("background_add_edit.jpg"))
     {
-        // obsługa wyjątku
-        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+        std::cerr << "Nie mozna zaladowac obrazka tla" << std::endl;
     }
 
     backgroundSprite.setTexture(backgroundTexture);
 
-    for (int i = 0; i < ITEMS_TO_ADD; ++i) 
+    for (int i = 0; i < ITEMS_TO_ADD; ++i) // petla tworzaca napisy i input boxy dla kazdego pola w bazie danych
     {
         sf::Text text;
         text.setFont(font_input);
@@ -60,7 +59,7 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
         inputTexts.push_back(inputText);
     }
 
-    header.setFont(font);
+    header.setFont(font); // wyswietlanie headera i guzikow
     header.setString("Dodawanie wydarzen");
     header.setCharacterSize(90);
     header.setFillColor(sf::Color(53, 53, 53));
@@ -84,7 +83,7 @@ Adding::Adding(float width, float height, State& state) : currentState(state)
     wrongData.setPosition(sf::Vector2f(width / 2.8 - wrongData.getGlobalBounds().width / 2, height - 100));
 }
 
-void Adding::draw(sf::RenderWindow& window) 
+void Adding::draw(sf::RenderWindow& window) // rysowanie okienka
 {
     window.draw(backgroundSprite);
     for (const auto& item : addItems) 
@@ -106,7 +105,7 @@ void Adding::draw(sf::RenderWindow& window)
 
 }
 
-void Adding::handleEvent(sf::Event& event) 
+void Adding::handleEvent(sf::Event& event) // obslugiwanie myszki i klawiatury, dodawanie do bazy danych
 {
     if (event.type == sf::Event::TextEntered) 
     {
@@ -202,12 +201,13 @@ void Adding::handleEvent(sf::Event& event)
             else if (backButton.getGlobalBounds().contains(mousePos))
             {
                 currentState = State::TimeTable;
+                wrongData.setString("");
             }
         }
     }
 }
 
-bool Adding::checkIfIsDay(string d)
+bool Adding::checkIfIsDay(string d) // sprawdzenie czy poprawny dzien
 {
     if (d == "Poniedzialek" || d == "Wtorek" || d == "Sroda" || d == "Czwartek" || d == "Piatek" || d == "Sobota" || d == "Niedziela")
     {

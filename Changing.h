@@ -12,7 +12,7 @@
 
 using namespace std;
 
-constexpr auto ITEMS_TO_CHANGE = 5;
+constexpr auto ITEMS_TO_CHANGE = 5; // stala do wyswietlania inputow
 
 class Changing
 {
@@ -26,7 +26,6 @@ public:
 
 private:
     int selectedInputBox = NULL;
-    sf::RectangleShape background;
     sf::Sprite backgroundSprite;
     sf::Texture backgroundTexture;
     vector<sf::Text> addItems;

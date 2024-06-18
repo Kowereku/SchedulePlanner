@@ -3,21 +3,21 @@
 using namespace std;
 
 
-Menu::Menu(float width, float height, State& state) : currentState(state) {
-    if (!font.loadFromFile("charlotte.ttf")) {
-        // obsługa wyjątku
+Menu::Menu(float width, float height, State& state) : currentState(state) // konstruktor menu glownego
+{ 
+    if (!font.loadFromFile("charlotte.ttf")) { // ladowanie czcionek
+        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("tlokal.jpg")) 
     {
-        // obsługa wyjątku
-        std::cerr << "Nie można załadować obrazka tła" << std::endl;
+        std::cerr << "Nie mozna zaladowac obrazka tla" << std::endl;
     }
 
     backgroundSprite.setTexture(backgroundTexture);
 
 
-    for (int i = 1; i < MENU_ITEMS; ++i) {
+    for (int i = 1; i < MENU_ITEMS; ++i) { // wyswietlanie opcji menu
         sf::Text text;
         text.setFont(font);
         switch (i)
@@ -35,14 +35,14 @@ Menu::Menu(float width, float height, State& state) : currentState(state) {
         menuItems.push_back(text);
     }
 
-    header.setFont(font);
+    header.setFont(font); // wyswietlanie naglowka
     header.setString("Kalendarz");
     header.setCharacterSize(90);
     header.setFillColor(sf::Color(53, 53, 53));
     header.setPosition(sf::Vector2f(width / 2 - header.getGlobalBounds().width / 2, height / 4));
 }
 
-void Menu::draw(sf::RenderWindow& window) 
+void Menu::draw(sf::RenderWindow& window) // rysowanie okienka
 {
     window.draw(backgroundSprite);
     window.draw(header);
@@ -52,7 +52,7 @@ void Menu::draw(sf::RenderWindow& window)
     }
 }
 
-void Menu::handleMouseClick(sf::Vector2f mousePos) 
+void Menu::handleMouseClick(sf::Vector2f mousePos) // obsluga myszki
 {
     for (const auto& item : menuItems) 
     {

@@ -8,7 +8,7 @@
 #include "State.h"
 #include "DBCal.h"
 
-#define DAYS_IN_WEEK 7
+#define DAYS_IN_WEEK 7 // stala ilosc dni w tygodniu
 
 class Delete
 {
@@ -21,7 +21,6 @@ public:
 	float heightPub;
 
 private:
-	sf::RectangleShape background;
 	sf::Font font;
 	sf::Font fontTypewriter;
 	sf::Text header;

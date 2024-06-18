@@ -14,7 +14,6 @@ public:
     void handleMouseClick(sf::Vector2f mousePos);
 
 private:
-    sf::RectangleShape background;
     std::vector<sf::Text> menuItems;
     std::vector<sf::Text> displayTexts;
     std::vector<sf::Text> listAuthors;
