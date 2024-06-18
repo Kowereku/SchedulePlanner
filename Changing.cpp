@@ -6,12 +6,12 @@ regex timeRegexChange(R"((0?\d|1\d|2[0-3]):([0-5]?\d))"); // regex czasu
 Changing::Changing(float width, float height, State& state) : currentState(state) // konstruktor okna do edycji rekordu
 {
     if (!font.loadFromFile("charlotte.ttf")) { // sprawdzenie czcionki i tla
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!font_input.loadFromFile("Typewriter.ttf"))
     {
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("background_add_edit.jpg"))

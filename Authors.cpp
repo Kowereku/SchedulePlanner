@@ -7,12 +7,12 @@ Authors::Authors(float width, float height, State& state) : currentState(state)
 {
     if (!font.loadFromFile("charlotte.ttf")) // sprawdzenei czcionki i tla
     {
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!fontTypewriter.loadFromFile("Typewriter.ttf"))
     {
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("tlokal.jpg"))

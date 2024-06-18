@@ -3,12 +3,12 @@
 Editing::Editing(float width, float height, State& state, Changing& changing) : currentState(state), changingInstance(changing) // konstruktor okna do wyboru do edycji
 {
     if (!font.loadFromFile("Calligraphy.ttf")) { // ladowanie czcionek i tla
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!fontTypewriter.loadFromFile("Typewriter.ttf"))
     {
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!backgroundTexture.loadFromFile("tlokal_2.jpg"))

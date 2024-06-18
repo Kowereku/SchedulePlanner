@@ -7,12 +7,12 @@ Adding::Adding(float width, float height, State& state) : currentState(state) //
 {
     if (!font.loadFromFile("charlotte.ttf")) // sprawdzanie, czy zaladowano czcionki i tlo
     {
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
 
     if (!font_input.loadFromFile("Typewriter.ttf"))
     {
-        std:cerr << "Nie mozna zaladowac czcionki" << std::endl;
+        std::cerr << "Nie mozna zaladowac czcionki" << std::endl;
     }
     
     if (!backgroundTexture.loadFromFile("background_add_edit.jpg"))
